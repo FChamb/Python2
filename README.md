@@ -11,5 +11,5 @@ The recommended way to setup is through the setup script:
 ```
 This will create a virtual environment in code/.venv, which you should then activate:
 ```console
-code/.venv/bin/activate
+source code/.venv/bin/activate
 ```

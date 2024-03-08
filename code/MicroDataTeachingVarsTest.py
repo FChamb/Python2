@@ -6,6 +6,7 @@ from consistency import colValidity as col_valid
 
 class TestExampleMicroData(unittest.TestCase):
 
+    # Helper functions
     def check_valid(self, values, permitted):
         s = pd.Series(values)
         self.assertTrue(col_valid(s, permitted))
@@ -41,9 +42,9 @@ class TestExampleMicroData(unittest.TestCase):
 
     def test_invalid_residence_type(self):
         self.check_invalid_single("O", md.residences)
+        self.check_invalid_single(0, md.residences)
 
     # Family Composition
-
     def test_family_composition_valid(self):
         self.check_valid([3,2,1,4,5,6,-9], md.familyComp)
 
@@ -52,7 +53,6 @@ class TestExampleMicroData(unittest.TestCase):
         self.check_invalid_single(-1, md.familyComp)
 
     # Population base
-
     def test_population_base_valid(self):
         s = pd.Series([1, 2, 3])
         self.assertTrue(col_valid(s, md.popBase))
@@ -113,3 +113,59 @@ class TestExampleMicroData(unittest.TestCase):
     def test_health_invalid(self):
         self.check_invalid_single(0, md.healthStat)
         self.check_invalid_single(6, md.healthStat)
+
+    # Ethnic Group
+    def test_ethnicity_valid(self):
+        self.check_valid([1,2,3,4,5,-9], md.ethnicity)
+
+    def test_ethnicity_invalid(self):
+        self.check_invalid_single(0, md.ethnicity)
+        self.check_invalid_single(6, md.ethnicity)
+
+    # Religion
+    def test_religion_valid(self):
+        self.check_valid([1,2,3,4,5,6,7,8,9,-9], md.religion)
+
+    def test_religion_invalid(self):
+        self.check_invalid_single(0, md.religion)
+        self.check_invalid_single(10, md.religion)
+
+    # Economic activity
+    def test_economic_activity_valid(self):
+        self.check_valid([1,2,3,4,5,6,7,8,9,-9], md.econAct)
+
+    def test_economic_activity_invalid(self):
+        self.check_invalid_single(0, md.econAct)
+        self.check_invalid_single(10, md.econAct)
+
+    # Occupation
+    def test_occupation_valid(self):
+        self.check_valid([1,2,3,4,5,6,7,8,9,-9], md.job)
+
+    def test_occupation_invalid(self):
+        self.check_invalid_single(0, md.job)
+        self.check_invalid_single(10, md.job)
+
+    # Industry
+    def test_industry_valid(self):
+        self.check_valid([1,2,3,4,5,6,7,8,9,10,11,12,-9], md.industry)
+
+    def test_industry_invalid(self):
+        self.check_invalid_single(0, md.industry)
+        self.check_invalid_single(13, md.industry)
+
+    # Hours worked per week
+    def test_hours_valid(self):
+        self.check_valid([1,2,3,4,-9], md.hrs)
+
+    def test_hours_invalid(self):
+        self.check_invalid_single(0, md.hrs)
+        self.check_invalid_single(5, md.hrs)
+
+    # Approximated social grade
+    def test_social_grade_valid(self):
+        self.check_valid([1,2,3,4,-9], md.socialGr)
+
+    def test_social_grade_invalid(self):
+        self.check_invalid_single(0, md.socialGr)
+        self.check_invalid_single(5, md.socialGr)

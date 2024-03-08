@@ -32,11 +32,24 @@ def main():
        f"File {csvPath} doesn't exist or isn't readable"
     
     df = pd.read_csv(csvPath)
-    df["Residence Type"] = df["Residence Type"].astype('str')
-    checkTypes(df) # appropriate types
-    checkValues(df) # appropriate values
+
+    # appropriate values
+    if not checkValues(df): 
+        # TO DO: delete row containing invalid values
+        raise ValueError("Column containing invalid value")
+    
+    # appropriate types
+    problemColumns = checkTypes(df)
+    reTypeCols(df, problemColumns)
     # check for duplicate IDs
     # contradictions ?
+
+def reTypeCols(df, cols):
+    print("Retyping columns ", cols)
+    for col in cols:
+        print("Retyping",col,"from",type(col), "to", colMap.get(col).type)
+        df[col] = df[col].astype(colMap.get(col).type)
+    print("Retyping finished")
 
 def checkTypes(df):
     problems = []
@@ -46,7 +59,6 @@ def checkTypes(df):
             problems.append(column)
     return problems
 
-# TO DO: PERSON ID
 def checkValues(df):
     isValid = True
     for column in df:

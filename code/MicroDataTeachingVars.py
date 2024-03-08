@@ -4,6 +4,8 @@ See MicroDataTeachingVariables pdf for details
 TO DO:
 Map values to descriptions/documentation of meanings
 '''
+import pandas as pd
+
 csvPath = "../data/census2011.csv/census2011.csv"
 
 # value options from pdf
@@ -43,7 +45,7 @@ class Column:
 # map header to column values
 colMap = {"Person ID" : Column(None, int), # set to None to allow any unique id, CHANGE ?
           "Region" : Column(regions, object),
-          "Residence Type" : Column(residences, object),
+          "Residence Type" : Column(residences, pd.StringDtype()),
           "Family Composition" : Column(familyComp, int),
           "Population Base" : Column(popBase, int),
           "Sex" : Column(sexes, int),

@@ -37,17 +37,21 @@ def main():
     # check for duplicate IDs
     # contradictions ?
 
+def checkTyping(df):
+    #TO DO
+    print()
 
+# TO DO: PERSON ID
 def checkValues(df):
     isValid = True
     for column in df:
-        if not colValidity(df[column], column):
+        if not colValidity(df[column], colMap.get(column)):
             print("Discrepancy in column ", column)
             isValid = False
     return isValid
 
-def colValidity(column, columnName):
-    return column.isin(colMap.get(columnName)).all()
+def colValidity(column, values):
+    return column.isin(values).all()
 
 if __name__ == "__main__":
     main()

@@ -9,7 +9,13 @@ The recommended way to setup is through the setup script:
 ```console
 ./setup.sh
 ```
-This will create a virtual environment in code/.venv, which you should then activate:
+This may take a minute or two.
+
+## Running ##
+
+### Jupyter notebook ###
+The jupyter notebook provides an easy way to interact with this project.
+To start the notebook with an environment providing all the correct dependencies:
 ```console
-source code/.venv/bin/activate
+./start_notebook.sh
 ```

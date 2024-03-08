@@ -28,9 +28,11 @@ def main():
     # Might want to separate each error
     assert os.path.isfile(csvPath) and os.access(csvPath, R_OK), \
        f"File {csvPath} doesn't exist or isn't readable"
-    
-    df = pd.read_csv(csvPath)
 
+    df = pd.read_csv(csvPath)
+    cleanDataFrame(df)
+
+def cleanDataFrame(df):    
     # appropriate values
     if hasProblemValue(df):
         dropRows(findProblemRows(df))
@@ -41,6 +43,7 @@ def main():
     # TO DO: check for duplicate IDs
     
     # TO DO: find contradictions ?
+    return df
 
 # given a list of indices, deletes the rows at those indices in the dataframe
 def dropRows(df, rows):

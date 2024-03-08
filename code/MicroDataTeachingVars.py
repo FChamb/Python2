@@ -6,6 +6,7 @@ Map values to descriptions/documentation of meanings
 '''
 csvPath = "../data/census2011.csv/census2011.csv"
 
+# value options from pdf
 regions = { "E12000001" : "North East",
             "E12000002" : "North West",
             "E12000003" : "Yorkshire and the Humber",
@@ -33,24 +34,31 @@ industry = [*range(1,13), -9]
 hrs = [*range(1,5), -9]
 socialGr = [*range(1,5), -9]
 
-colMap = {"Person ID" : [], # ???
-          "Region" : regions,
-          "Residence Type" : residences,
-          "Family Composition" : familyComp,
-          "Population Base" : familyComp,
-          "Sex" : sexes,
-          "Age" : ages,
-          "Marital Status" : maritalStat,
-          "Student":studying,
-          "Country of Birth" : birthCountry,
-          "Health" : healthStat,
-          "Ethnic Group" : ethnicity,
-          "Religion" : religion,
-          "Economic Activity" : econAct,
-          "Occupation" : job,
-          "Industry" : industry,
-          "Hours worked per week" : hrs,
-          "Approximated Social Grade" : socialGr
+# class to represent column
+class Column:
+    def __init__(self, values, type):
+        self.values = values
+        self.type = type
+
+# map header to column values
+colMap = {"Person ID" : Column(None, int), # set to None to allow any unique id, CHANGE ?
+          "Region" : Column(regions, object),
+          "Residence Type" : Column(residences, object),
+          "Family Composition" : Column(familyComp, int),
+          "Population Base" : Column(popBase, int),
+          "Sex" : Column(sexes, int),
+          "Age" : Column(ages, int),
+          "Marital Status" : Column(maritalStat, int),
+          "Student": Column(studying, int),
+          "Country of Birth" : Column(birthCountry, int),
+          "Health" : Column(healthStat, int),
+          "Ethnic Group" : Column(ethnicity, int),
+          "Religion" : Column(religion, int),
+          "Economic Activity" : Column(econAct, int),
+          "Occupation" : Column(job, int),
+          "Industry" : Column(industry, int),
+          "Hours worked per week" : Column(hrs, int),
+          "Approximated Social Grade" : Column(socialGr, int)
           }
 
 # compare economic activity to occupation, student status, etc. to find discrepancies

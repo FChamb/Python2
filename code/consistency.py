@@ -32,26 +32,31 @@ def main():
        f"File {csvPath} doesn't exist or isn't readable"
     
     df = pd.read_csv(csvPath)
-    # typing 
+    df["Residence Type"] = df["Residence Type"].astype('str')
+    checkTypes(df) # appropriate types
     checkValues(df) # appropriate values
     # check for duplicate IDs
     # contradictions ?
 
-def checkTyping(df):
-    #TO DO
-    print()
+def checkTypes(df):
+    problems = []
+    for column in df:
+        if not df[column].dtype == colMap.get(column).type:
+            print("Discrepancy of type in column ", column, "expected", colMap.get(column).type, "found", df[column].dtype)
+            problems.append(column)
+    return problems
 
 # TO DO: PERSON ID
 def checkValues(df):
     isValid = True
     for column in df:
-        if not colValidity(df[column], colMap.get(column)):
-            print("Discrepancy in column ", column)
+        if not colValidity(df[column], colMap.get(column).values):
+            print("Discrepancy of value in column ", column)
             isValid = False
     return isValid
 
 def colValidity(column, values):
-    return column.isin(values).all()
+    return values == None or column.isin(values).all()
 
 if __name__ == "__main__":
     main()

@@ -30,6 +30,9 @@ def main():
        f"File {csvPath} doesn't exist or isn't readable"
     
     df = pd.read_csv(csvPath)
+    print(df["Residence Type"].isin(['H','C']).all())
+    # asType 
+    #print(df.residence)
     
 
 if __name__ == "__main__":

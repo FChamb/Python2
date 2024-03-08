@@ -34,39 +34,68 @@ def main():
     df = pd.read_csv(csvPath)
 
     # appropriate values
-    if not checkValues(df): 
-        # TO DO: delete row containing invalid values
-        raise ValueError("Column containing invalid value")
-    
+    if hasProblemValue(df):
+        dropRows(findProblemRows(df))
     # appropriate types
     problemColumns = checkTypes(df)
     reTypeCols(df, problemColumns)
-    # check for duplicate IDs
-    # contradictions ?
 
+    # TO DO: check for duplicate IDs
+    
+    # TO DO: find contradictions ?
+
+# given a list of indices, deletes the rows at those indices in the dataframe
+def dropRows(df, rows):
+    print("Dropping rows", rows, "...")
+    for index in rows:
+        print("Dropping row at",index)
+        df.drop(index)
+    print("Row removal finished.")
+
+# retypes the given columns in the given dataframe with their expected type
 def reTypeCols(df, cols):
-    print("Retyping columns ", cols)
+    print("Retyping columns", cols, "...")
     for col in cols:
         print("Retyping",col,"from",type(col), "to", colMap.get(col).type)
         df[col] = df[col].astype(colMap.get(col).type)
     print("Retyping finished")
 
+# returns a list of columns that are incorrectly typed
 def checkTypes(df):
+    print("Checking types...")
     problems = []
     for column in df:
         if not df[column].dtype == colMap.get(column).type:
             print("Discrepancy of type in column ", column, "expected", colMap.get(column).type, "found", df[column].dtype)
             problems.append(column)
+    print("Type checking finished.")
     return problems
 
-def checkValues(df):
-    isValid = True
+# returns a list of indices of rows where there is an invalid value
+def findProblemRows(df):
+    print("Finding rows with problem values...")
+    problems = []
+    for index, row, in df.iterrows():
+        for col in df:
+            if colMap.get(col).values is not None and not df[col][index] in colMap.get(col).values:
+                #colValidity(df[col][index], colMap.get(col).values):
+                print("Discrepancy of value in row ", index, "column", col)
+                problems.append(index)
+    print("Problem finding finished.")
+    return problems
+
+# returns true if an invalid value is found in a given dataframe
+def hasProblemValue(df):
+    print("Checking for problem values...")
+    isValid = False
     for column in df:
         if not colValidity(df[column], colMap.get(column).values):
             print("Discrepancy of value in column ", column)
-            isValid = False
+            isValid = True
+    print("Value checking finished.")
     return isValid
 
+# returns true if given column only contains values in given value set
 def colValidity(column, values):
     return values == None or column.isin(values).all()
 

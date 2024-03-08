@@ -21,6 +21,8 @@ import os
 from os import R_OK
 import pandas as pd
 
+from MicroDataTeachingVars import *
+
 csvPath = "../data/census2011.csv/census2011.csv"
 
 def main():
@@ -30,10 +32,22 @@ def main():
        f"File {csvPath} doesn't exist or isn't readable"
     
     df = pd.read_csv(csvPath)
-    print(df["Residence Type"].isin(['H','C']).all())
-    # asType 
-    #print(df.residence)
-    
+    # typing 
+    checkValues(df) # appropriate values
+    # check for duplicate IDs
+    # contradictions ?
+
+
+def checkValues(df):
+    isValid = True
+    for column in df:
+        if not colValidity(df[column], column):
+            print("Discrepancy in column ", column)
+            isValid = False
+    return isValid
+
+def colValidity(column, columnName):
+    return column.isin(colMap.get(columnName)).all()
 
 if __name__ == "__main__":
     main()

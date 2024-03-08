@@ -15,6 +15,12 @@ class TestExampleMicroData(unittest.TestCase):
         s = pd.Series([value])
         self.assertFalse(col_valid(s, permitted))
 
+    # Student ID
+    def test_valid_student_id(self):
+        # No restrictions on Student ID
+        self.check_valid([0, 10, 23132], None)
+        self.check_valid(["awdawd", 2013, -100], None)
+
     # Regions
     def test_valid_regions(self):
         valid_regions =[
@@ -36,7 +42,6 @@ class TestExampleMicroData(unittest.TestCase):
         self.check_invalid_single(60, md.regions)
 
     # Residence types
-
     def test_residence_type(self):
         self.check_valid(["H", "C"], md.residences)
 

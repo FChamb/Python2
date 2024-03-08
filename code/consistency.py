@@ -23,8 +23,6 @@ import pandas as pd
 
 from MicroDataTeachingVars import *
 
-csvPath = "../data/census2011.csv/census2011.csv"
-
 def main():
     # https://stackoverflow.com/questions/32073498/check-if-file-is-readable-with-python-try-or-if-else
     # Might want to separate each error

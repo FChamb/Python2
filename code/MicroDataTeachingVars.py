@@ -6,7 +6,7 @@ Map values to descriptions/documentation of meanings
 '''
 import pandas as pd
 
-csvPath = "../data/census2011.csv/census2011.csv"
+csvPath = "data/census2011.csv/census2011.csv"
 
 # value options from pdf
 regions = { "E12000001" : "North East",

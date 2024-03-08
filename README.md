@@ -2,8 +2,8 @@
 
 ## Set up ##
 The required dependencies for this project are:
- - matplotlib
- - pandas
+ - matplotlib 3.8
+ - pandas 2.2
 
 The recommended way to setup is through the setup script:
 ```console

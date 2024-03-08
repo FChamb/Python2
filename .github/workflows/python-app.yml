@@ -26,6 +26,6 @@ jobs:
     - name: Install dependencies
       run: |
         ./setup.sh
-    - name: Test with pytest
+    - name: Run tests
       run: |
         ./test.sh

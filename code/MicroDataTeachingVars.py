@@ -15,22 +15,28 @@ class OptionEnum(Enum):
     def parse(cls, encoded):
         """Parses the encoded key into a enum variant"""
         for m in cls:
-            if encoded == m.value[0]:
+            if encoded == m.key():
                 return m
         raise KeyError(str(encoded) + " is not a valid key for " + str(cls))
 
     @classmethod
     def keys(cls):
         """Returns a list of the valid keys for this option"""
-        return [m.value[0] for m in cls]
+        return [m.key() for m in cls]
+
+    def key(self):
+        return self.value[0]
+
+    def desc(self):
+        return self.value[1]
 
     def __str__(self):
         """Returns a human readable description of what this enum signified"""
-        return self.value[1]
+        return self.desc()
 
     def __repr__(self):
         """Returns a representation of this enum with both value and type information"""
-        return f"<{self.__class__.__name__}: {self.value[1]}>" 
+        return f"<{self.__class__.__name__}: {self.key()} -> {self.name}>"
 
 
 class RegionOptions(OptionEnum):
@@ -59,9 +65,9 @@ class FamilyCompositionOptions(OptionEnum):
     LONE_FATHER   = (4, "Lone parent family (male head)")
     LONE_MOTHER   = (5, "Lone parent family (female head)")
     OTHER         = (6, "Other related family")
-    NO_CODE       = (-9,"No code required (Resident of communal establishment, \
-                         students or schoolchildren living away during \
-                         term-time, or a short-term resident")
+    NO_CODE       = (-9,"No code required (Resident of communal establishment, "
+                         "students or schoolchildren living away during "
+                         "term-time, or a short-term resident")
 
 
 class PopulationBaseOptions(OptionEnum):
@@ -87,15 +93,15 @@ class AgeOptions(OptionEnum):
 
 
 class MaritalStatusOptions(OptionEnum):
-    SINGLE    = (1, "Single (never married or never registered in a \
-                     same-sex civil partnership)")
+    SINGLE    = (1, "Single (never married or never registered in a "
+                     "same-sex civil partnership)")
     MARRIED   = (2, "Married or in a registered same-sex civil partnership")
-    SEPARATED = (3, "Separated but still legally marrried or seperated \
-                     but still legally in a same-sex civil partnership")
-    DIVORCED  = (4, "Divorced or formely in a same-sex civil partnership \
-                     which is now legally dissolved")
-    WIDOWED   = (5, "Widowed or surviving partner from a same-sex \
-                     civil partnership")
+    SEPARATED = (3, "Separated but still legally marrried or seperated "
+                    "but still legally in a same-sex civil partnership")
+    DIVORCED  = (4, "Divorced or formely in a same-sex civil partnership "
+                    "which is now legally dissolved")
+    WIDOWED   = (5, "Widowed or surviving partner from a same-sex"
+                    "civil partnership")
 
 
 class StudentOptions(OptionEnum):
@@ -106,8 +112,8 @@ class StudentOptions(OptionEnum):
 class CountryOfBirthOptions(OptionEnum):
     UK      = (1, "UK")
     NON_UK  = (2, "Non UK")
-    NO_CODE = (-9,"No Code required (Students or schoolchildren living away \
-                   during term-time") 
+    NO_CODE = (-9,"No Code required (Students or schoolchildren living away "
+                   "during term-time")
 
 
 class HealthOptions(OptionEnum):
@@ -116,8 +122,8 @@ class HealthOptions(OptionEnum):
     FAIR      = (3, "Fair health")
     BAD       = (4, "Bad health")
     VERY_BAD  = (5, "Very bad health")
-    NO_CODE   = (-9,"No code required (Students or schoolchildren living away \
-                     during term-time")
+    NO_CODE   = (-9,"No code required (Students or schoolchildren living away "
+                     "during term-time")
 
 
 class EthnicityOptions(OptionEnum):
@@ -126,8 +132,8 @@ class EthnicityOptions(OptionEnum):
     ASIAN   = (3, "Asian or Asian British")
     BLACK   = (4, "Black or Black British")
     OTHER   = (5, "Chinese or Other ethnic group")
-    NO_CODE = (-9,"No code required (Not resident in England or Wales, \
-                   students or schoolchildren living away during term time")
+    NO_CODE = (-9,"No code required (Not resident in England or Wales, "
+                   "students or schoolchildren living away during term time")
 
 class ReligionOptions(OptionEnum):
     NONE       = (1, "No religion")
@@ -139,9 +145,9 @@ class ReligionOptions(OptionEnum):
     SIKH       = (7, "Sikh")
     OTHER      = (8, "Other religion")
     NOT_STATED = (9, "Not stated")
-    NO_CODE    = (-9,"No code required (Not resident in England or \
-                      Wales, students or schoolchildren living away \
-                      during term-time)")
+    NO_CODE    = (-9,"No code required (Not resident in England or "
+                      "Wales, students or schoolchildren living away "
+                      "during term-time)")
 
 
 class EconomicActivityOptions(OptionEnum):
@@ -154,8 +160,8 @@ class EconomicActivityOptions(OptionEnum):
     CARING            = (7, "Economically inactive: Looking after home or family")
     SICK_OR_DISABLED  = (8, "Economically inactive: Long-term sick or disabled")
     OTHER             = (9, "Economically inactive: Other")
-    NO_CODE           = (-9,"No code required (Aged under 16 or students \
-                             or schoolchildren living away during term-time)")
+    NO_CODE           = (-9,"No code required (Aged under 16 or students "
+                             "or schoolchildren living away during term-time)")
 
 
 class OccupationOptions(OptionEnum):
@@ -168,57 +174,57 @@ class OccupationOptions(OptionEnum):
     SALES_SERVICE          = (7, "Sales and Customer Service Occupations")
     PLANT_OPERATIVE        = (8, "Process, Plant and Machine Operatives")
     ELEMENTARY             = (9, "Elementary Occupations")
-    NO_CODE                = (-9,"No code required (People aged under 16, \
-                                  people who have never worked and students or \
-                                  schoolchildren living away during term-time)")
+    NO_CODE                = (-9,"No code required (People aged under 16, "
+                                  "people who have never worked and students or "
+                                  "schoolchildren living away during term-time)")
 
 
 class IndustryOptions(OptionEnum):
     AGRICULTURE                 = (1, "Agriculture, forestry and fishing")
-    ESSENTIALS                  = (2, "Mining and quarrying; Manufacturing; \
-                                       Electricity, gas, steam and air conditioning \
-                                       system; Water supply")
+    ESSENTIALS                  = (2, "Mining and quarrying; Manufacturing; "
+                                       "Electricity, gas, steam and air conditioning "
+                                       "system; Water supply")
     CONSTRUCTION                = (3, "Construction")
-    TRADE_AND_MOTOR             = (4, "Wholesale and retail trade; Repair of motor \
-                                       vehicles and motorcycles")
+    TRADE_AND_MOTOR             = (4, "Wholesale and retail trade; Repair of motor "
+                                       "vehicles and motorcycles")
     ACCOMODATION_AND_FOOD       = (5, "Accomodation and food service activities")
-    TRANSPORT_AND_COMMUNICATION = (6, "Transport and storage; \
-                                       Information and communication")
+    TRANSPORT_AND_COMMUNICATION = (6, "Transport and storage; "
+                                       "Information and communication")
     FINANCIAL                   = (7, "Financial and insurance activities; Intermediation")
-    REAL_ESTATE_TECHNICAL_ADMIN = (8, "Real estate activities; Professional, \
-                                       scientific and technical activities; \
-                                       Administrative and \
-                                       support service activities")
+    REAL_ESTATE_TECHNICAL_ADMIN = (8, "Real estate activities; Professional, "
+                                       "scientific and technical activities; "
+                                       "Administrative and "
+                                       "support service activities")
     EDUCATION                   = (9, "Education")
     HEALTH_AND_SOCIAL_WORK      = (10,"Human health and social work activities")
-    PUBLIC_ADMIN_DEFENSE_SOCIAL = (11,"Public administration and defence; \
-                                       compulsory social security")
-    OTHER                       = (12,"Other community, social and personal \
-                                       service activities; Private households \
-                                       employing domestic staff; Extra-territorial \
-                                       organisations and bodies")
-    NO_CODE                     = (-9,"No code required (People aged under 16, \
-                                       people who have never worked, and students or \
-                                       schoolchildren living away during term-time)")
+    PUBLIC_ADMIN_DEFENSE_SOCIAL = (11,"Public administration and defence; "
+                                       "compulsory social security")
+    OTHER                       = (12,"Other community, social and personal "
+                                       "service activities; Private households "
+                                       "employing domestic staff; Extra-territorial "
+                                       "organisations and bodies")
+    NO_CODE                     = (-9,"No code required (People aged under 16, "
+                                       "people who have never worked, and students or "
+                                       "schoolchildren living away during term-time)")
 
 class HoursWorkedPerWeekOptions(OptionEnum):
     PART_TIME_LOW  = (1, "Part-time: 15 or less hours worked")
     PART_TIME_HIGH = (2, "Part-time: 16 to 30 hours worked")
     FULL_TIME_LOW  = (3, "Full-time: 31 to 48 hours worked")
     FULL_TIME_HIGH = (4, "Full-time: 49 or more hours worked")
-    NO_CODE        = (-9,"No code required (People aged under 16, \
-                          people not working, and students or schoolchildren \
-                          living away during term-time)")
+    NO_CODE        = (-9,"No code required (People aged under 16, "
+                          "people not working, and students or schoolchildren "
+                          "living away during term-time)")
 
 class SocialGradeOptions(OptionEnum):
     AB = (1, "AB")
     C1 = (2, "C1")
     C2 = (3, "C2")
     DE = (4, "DE")
-    NO_CODE = (-9, "No code required (People aged under 16, \
-                    people resident in communal establishments, and \
-                    students or schoolchildren living away during term- \
-                    time)")
+    NO_CODE = (-9, "No code required (People aged under 16, "
+                    "people resident in communal establishments, and "
+                    "students or schoolchildren living away during term- "
+                    "time)")
 
 
 # class to represent column

@@ -35,7 +35,7 @@ def main():
 def cleanDataFrame(df):    
     # appropriate values
     if hasProblemValue(df):
-        dropRows(findProblemRows(df))
+        dropRows(df, findProblemRows(df))
     # appropriate types
     problemColumns = checkTypes(df)
     reTypeCols(df, problemColumns)
@@ -76,12 +76,16 @@ def checkTypes(df):
 def findProblemRows(df):
     print("Finding rows with problem values...")
     problems = []
-    for index, row, in df.iterrows():
-        for col in df:
-            if colMap.get(col).values is not None and not df[col][index] in colMap.get(col).values:
-                #colValidity(df[col][index], colMap.get(col).values):
-                print("Discrepancy of value in row ", index, "column", col)
-                problems.append(index)
+    for col_name in df:
+        print("Column:", col_name)
+        col = colMap[col_name]
+        if col.values is None:
+            continue
+        values_good = df[col_name].isin(col.values)
+        bad_values = values_good[~values_good].index
+        if len(bad_values) != 0:
+            print("Discrepancies in column ", col_name, "-", bad_values)
+            return list(bad_values)
     print("Problem finding finished.")
     return problems
 

@@ -229,29 +229,30 @@ class SocialGradeOptions(OptionEnum):
 
 # class to represent column
 class Column:
-    def __init__(self, values, type):
-        self.values = values
+    def __init__(self, options, type):
+        self.options = options
+        self.values = None if options is None else options.keys()
         self.type = type
 
 # map header to column values
 colMap = {"Person ID" : Column(None, int), # set to None to allow any unique id, CHANGE ?
-          "Region" : Column(RegionOptions.keys(), object),
-          "Residence Type" : Column(ResidenceOptions.keys(), pd.StringDtype()),
-          "Family Composition" : Column(FamilyCompositionOptions.keys(), int),
-          "Population Base" : Column(PopulationBaseOptions.keys(), int),
-          "Sex" : Column(SexOptions.keys(), int),
-          "Age" : Column(AgeOptions.keys(), int),
-          "Marital Status" : Column(MaritalStatusOptions.keys(), int),
-          "Student": Column(StudentOptions.keys(), int),
-          "Country of Birth" : Column(CountryOfBirthOptions.keys(), int),
-          "Health" : Column(HealthOptions.keys(), int),
-          "Ethnic Group" : Column(EthnicityOptions.keys(), int),
-          "Religion" : Column(ReligionOptions.keys(), int),
-          "Economic Activity" : Column(EconomicActivityOptions.keys(), int),
-          "Occupation" : Column(OccupationOptions.keys(), int),
-          "Industry" : Column(IndustryOptions.keys(), int),
-          "Hours worked per week" : Column(HoursWorkedPerWeekOptions.keys(), int),
-          "Approximated Social Grade" : Column(SocialGradeOptions.keys(), int)
+          "Region" : Column(RegionOptions, object),
+          "Residence Type" : Column(ResidenceOptions, pd.StringDtype()),
+          "Family Composition" : Column(FamilyCompositionOptions, int),
+          "Population Base" : Column(PopulationBaseOptions, int),
+          "Sex" : Column(SexOptions, int),
+          "Age" : Column(AgeOptions, int),
+          "Marital Status" : Column(MaritalStatusOptions, int),
+          "Student": Column(StudentOptions, int),
+          "Country of Birth" : Column(CountryOfBirthOptions, int),
+          "Health" : Column(HealthOptions, int),
+          "Ethnic Group" : Column(EthnicityOptions, int),
+          "Religion" : Column(ReligionOptions, int),
+          "Economic Activity" : Column(EconomicActivityOptions, int),
+          "Occupation" : Column(OccupationOptions, int),
+          "Industry" : Column(IndustryOptions, int),
+          "Hours worked per week" : Column(HoursWorkedPerWeekOptions, int),
+          "Approximated Social Grade" : Column(SocialGradeOptions, int)
           }
 
 # compare economic activity to occupation, student status, etc. to find discrepancies

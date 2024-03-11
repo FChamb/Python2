@@ -1,18 +1,18 @@
+#!/usr/bin/env python
 '''
 TO DO:
-    - make executable script (single shell command)
-    - remove duplicates
+    - make shell script to run executable
     - remove contradictions
     - produce new file with refined data if any duplicates or contradictions are removed
-    - 
 '''
 import os
+import sys
 from os import R_OK
 import pandas as pd
 
 from MicroDataTeachingVars import *
 
-def main():
+def main(csvPath):
     # https://stackoverflow.com/questions/32073498/check-if-file-is-readable-with-python-try-or-if-else
     # Might want to separate each error
     assert os.path.isfile(csvPath) and os.access(csvPath, R_OK), \
@@ -99,4 +99,5 @@ def removeDupId(df):
     df["Person ID"].duplicated(keep=False)
 
 if __name__ == "__main__":
-    main()
+    if (len(sys.argv) == 2):
+        main(sys.argv[1])

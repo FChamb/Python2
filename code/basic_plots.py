@@ -5,6 +5,11 @@ from MicroDataTeachingVars import *
 
 csvPath = 'data/census2011-clean.csv' #placeholder
 
+''' TO DO:
+        - implement plot functions
+        - make executable to gen images in images subdir
+'''
+
 def main():
     df = pd.read_csv(csvPath)
     genRecordBarPlot(df, 'Region')

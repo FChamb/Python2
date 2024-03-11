@@ -40,7 +40,8 @@ def cleanDataFrame(df):
     problemColumns = checkTypes(df)
     reTypeCols(df, problemColumns)
 
-    # TO DO: check for duplicate IDs
+    # remove all the rows with duplicate ID values
+    removeDupId(df)
     
     # TO DO: find contradictions ?
     return df
@@ -103,6 +104,10 @@ def hasProblemValue(df):
 # returns true if given column only contains values in given value set
 def colValidity(column, values):
     return values == None or column.isin(values).all()
+
+# returns rows containing any duplicate ID's
+def removeDupId(df):
+    df["Person ID"].duplicated(keep=False)
 
 if __name__ == "__main__":
     main()

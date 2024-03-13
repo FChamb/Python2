@@ -6,16 +6,17 @@ from MicroDataTeachingVars import *
 csvPath = '../data/census2011-clean.csv' #placeholder
 
 ''' TO DO:
-        - implement plot functions
+        - add legend to bar plot
         - make executable to gen images in images subdir
+        - executable should take filepath or dataframe AND some value for colMap
 '''
 
 def main():
     df = pd.read_csv(csvPath)
-    genRecordBarPlot(df, 't')
-    genRecordBarPlot(df, 'Occupation')
-    #genDistPieChart(df, 'Age')
-    #genDistPieChart(df, 'Economic Activity')
+    #genRecordBarPlot(df, 't')
+    #genRecordBarPlot(df, 'Occupation')
+    genDistPieChart(df, 'Age')
+    genDistPieChart(df, 'Economic Activity')
 
 def genRecordBarPlot(df, colName):
     if colMap.get(colName) is not None:
@@ -36,7 +37,13 @@ def genRecordBarPlot(df, colName):
     else:
         raise ValueError(colName+" is an invalid column")
 
-#def genDistPieChart(df, colName):
+def genDistPieChart(df, colName):
+    if colMap.get(colName) is not None:
+        plt.pie(df[colName].value_counts(), labels = colMap.get(colName).options)
+        plt.title("Distribution of sample by " + colName.lower())
+        plt.show()
+    else:
+        raise ValueError(colName+" is an invalid column")
 
 if __name__ == "__main__":
     main()

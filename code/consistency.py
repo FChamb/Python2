@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 '''
 TO DO:
-    - make shell script to run executable
     - remove contradictions
     - produce new file with refined data if any duplicates or contradictions are removed
 '''
@@ -99,5 +98,8 @@ def removeDupId(df):
     df["Person ID"].duplicated(keep=False)
 
 if __name__ == "__main__":
-    if (len(sys.argv) == 2):
-        main(sys.argv[1])
+    if (len(sys.argv) != 2):
+        print("Invalid arguments")
+        print("Usage:", sys.argv[0], "<csvfile>")
+        exit(1)
+    main(sys.argv[1])

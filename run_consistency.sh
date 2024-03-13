@@ -1,2 +1,2 @@
 #!/bin/bash
-code/.venv/bin/python3 code/consistency.py
+code/.venv/bin/python3 code/consistency.py "$@"

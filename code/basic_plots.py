@@ -27,7 +27,11 @@ def genRecordBarPlot(df, colName):
         values = [str(x) for x in colMap.get(colName).values]
         # plot options w/ their frequencies
         f, ax = plt.subplots()
-        ax.bar(values, df[colName].value_counts()) 
+        bars = ax.bar(values, df[colName].value_counts()) 
+        col = 0
+        for bar in bars:
+            bar.set_color(str(col))
+            col+=.1
         # title + y axis
         plt.title("Number of records for each " + colName.lower())
         plt.ylabel("Number of Records")
@@ -42,6 +46,7 @@ def genRecordBarPlot(df, colName):
         # https://stackoverflow.com/questions/62941033/how-to-turn-x-axis-values-into-a-legend-for-matplotlib-bar-graph 
         legend = '\n'.join(f'{x.key()} - {x.desc()}' for x in colMap.get(colName).options)
         # TO DO: ADD LEGEND SOMEHOW
+        #ax.legend([x for x in colMap.get(colName).options])
         
         # save and close
         plt.savefig(imagesDir+'barchart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")

@@ -1,10 +1,5 @@
 import pandas as pd
 
-'''
-TO DO: - Implement getNumUniques
-       - Implement getNumOccurences
-'''
-
 def printSummary(df):
     print("Number of Records: " + str(getNumRecords(df)))
     print("Column types-----------")

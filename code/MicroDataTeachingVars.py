@@ -24,8 +24,10 @@ def no_code_req(*reasons):
     s = "No code required"
     if len(reasons) == 0:
         return s
+    reasons = list(reasons)
+    reasons[0] = reasons[0].capitalize()
     reasons_str = ", ".join(reasons)
-    return s + "( " + reasons_str + ")"
+    return s + " (" + reasons_str + ")"
 
 
 

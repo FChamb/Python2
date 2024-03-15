@@ -1,42 +1,32 @@
 '''
 See MicroDataTeachingVariables pdf for details
-
-TO DO:
-Map values to descriptions/documentation of meanings
 '''
+from dataset import Column
+from dataset import OptionEnum
+
 import pandas as pd
-from enum import Enum
-from enum import IntEnum
 
 csvPath = "data/census2011.csv"
 
-class OptionEnum(Enum):
-    @classmethod
-    def parse(cls, encoded):
-        """Parses the encoded key into a enum variant"""
-        for m in cls:
-            if encoded == m.key():
-                return m
-        raise KeyError(str(encoded) + " is not a valid key for " + str(cls))
+NO_CODE_REQ = "No Code required"
+NO_CODE_AWAY_STUDENT = "students or schoolchildren living away during term-time"
+NO_CODE_SHORT_TERM_RES = "short-term resident"
+NO_CODE_UNDER_16 = "people aged under 16"
+NO_CODE_NOT_ENG_WALES = "not resident in England or Wales"
+NO_CODE_NEVER_WORKED = "people who have never worked"
+NO_CODE_NOT_WORKING = "people who are not working"
+NO_CODE_COMMUNAL_RES = "people resident in a communal establishment"
 
-    @classmethod
-    def keys(cls):
-        """Returns a list of the valid keys for this option"""
-        return [m.key() for m in cls]
+# Creates a string combining all possible reasons
+# that a particular cell does not have a code into
+# a long human-readable string
+def no_code_req(*reasons):
+    s = "No code required"
+    if len(reasons) == 0:
+        return s
+    reasons_str = ", ".join(reasons)
+    return s + "( " + reasons_str + ")"
 
-    def key(self):
-        return self.value[0]
-
-    def desc(self):
-        return self.value[1]
-
-    def __str__(self):
-        """Returns a human readable description of what this enum signified"""
-        return self.desc()
-
-    def __repr__(self):
-        """Returns a representation of this enum with both value and type information"""
-        return f"<{self.__class__.__name__}: {self.key()} -> {self.name}>"
 
 
 class RegionOptions(OptionEnum):
@@ -65,9 +55,9 @@ class FamilyCompositionOptions(OptionEnum):
     LONE_FATHER   = (4, "Lone parent family (male head)")
     LONE_MOTHER   = (5, "Lone parent family (female head)")
     OTHER         = (6, "Other related family")
-    NO_CODE       = (-9,"No code required (Resident of communal establishment, "
-                         "students or schoolchildren living away during "
-                         "term-time, or a short-term resident")
+    NO_CODE       = (-9, no_code_req(NO_CODE_COMMUNAL_RES,
+                                     NO_CODE_AWAY_STUDENT,
+                                     NO_CODE_SHORT_TERM_RES))
 
 
 class PopulationBaseOptions(OptionEnum):
@@ -112,9 +102,7 @@ class StudentOptions(OptionEnum):
 class CountryOfBirthOptions(OptionEnum):
     UK      = (1, "UK")
     NON_UK  = (2, "Non UK")
-    NO_CODE = (-9,"No Code required (Students or schoolchildren living away "
-                   "during term-time")
-
+    NO_CODE = (-9, no_code_req(NO_CODE_AWAY_STUDENT))
 
 class HealthOptions(OptionEnum):
     VERY_GOOD = (1, "Very good health")
@@ -122,8 +110,7 @@ class HealthOptions(OptionEnum):
     FAIR      = (3, "Fair health")
     BAD       = (4, "Bad health")
     VERY_BAD  = (5, "Very bad health")
-    NO_CODE   = (-9,"No code required (Students or schoolchildren living away "
-                     "during term-time")
+    NO_CODE   = (-9, no_code_req(NO_CODE_AWAY_STUDENT))
 
 
 class EthnicityOptions(OptionEnum):
@@ -132,8 +119,7 @@ class EthnicityOptions(OptionEnum):
     ASIAN   = (3, "Asian or Asian British")
     BLACK   = (4, "Black or Black British")
     OTHER   = (5, "Chinese or Other ethnic group")
-    NO_CODE = (-9,"No code required (Not resident in England or Wales, "
-                   "students or schoolchildren living away during term time")
+    NO_CODE = (-9, no_code_req(NO_CODE_NOT_ENG_WALES, NO_CODE_AWAY_STUDENT))
 
 class ReligionOptions(OptionEnum):
     NONE       = (1, "No religion")
@@ -145,10 +131,7 @@ class ReligionOptions(OptionEnum):
     SIKH       = (7, "Sikh")
     OTHER      = (8, "Other religion")
     NOT_STATED = (9, "Not stated")
-    NO_CODE    = (-9,"No code required (Not resident in England or "
-                      "Wales, students or schoolchildren living away "
-                      "during term-time)")
-
+    NO_CODE    = (-9, no_code_req(NO_CODE_NOT_ENG_WALES, NO_CODE_AWAY_STUDENT))
 
 class EconomicActivityOptions(OptionEnum):
     EMPLOYEE          = (1, "Economically active: Employee")
@@ -160,8 +143,8 @@ class EconomicActivityOptions(OptionEnum):
     CARING            = (7, "Economically inactive: Looking after home or family")
     SICK_OR_DISABLED  = (8, "Economically inactive: Long-term sick or disabled")
     OTHER             = (9, "Economically inactive: Other")
-    NO_CODE           = (-9,"No code required (Aged under 16 or students "
-                             "or schoolchildren living away during term-time)")
+    NO_CODE           = (-9, no_code_req(NO_CODE_UNDER_16,
+                                         NO_CODE_AWAY_STUDENT))
 
 
 class OccupationOptions(OptionEnum):
@@ -174,10 +157,9 @@ class OccupationOptions(OptionEnum):
     SALES_SERVICE          = (7, "Sales and Customer Service Occupations")
     PLANT_OPERATIVE        = (8, "Process, Plant and Machine Operatives")
     ELEMENTARY             = (9, "Elementary Occupations")
-    NO_CODE                = (-9,"No code required (People aged under 16, "
-                                  "people who have never worked and students or "
-                                  "schoolchildren living away during term-time)")
-
+    NO_CODE                = (-9, no_code_req(NO_CODE_UNDER_16,
+                                              NO_CODE_NEVER_WORKED,
+                                              NO_CODE_AWAY_STUDENT))
 
 class IndustryOptions(OptionEnum):
     AGRICULTURE                 = (1, "Agriculture, forestry and fishing")
@@ -203,36 +185,28 @@ class IndustryOptions(OptionEnum):
                                        "service activities; Private households "
                                        "employing domestic staff; Extra-territorial "
                                        "organisations and bodies")
-    NO_CODE                     = (-9,"No code required (People aged under 16, "
-                                       "people who have never worked, and students or "
-                                       "schoolchildren living away during term-time)")
+    NO_CODE                     = (-9, no_code_req(NO_CODE_UNDER_16,
+                                                   NO_CODE_NEVER_WORKED,
+                                                   NO_CODE_AWAY_STUDENT))
 
 class HoursWorkedPerWeekOptions(OptionEnum):
     PART_TIME_LOW  = (1, "Part-time: 15 or less hours worked")
     PART_TIME_HIGH = (2, "Part-time: 16 to 30 hours worked")
     FULL_TIME_LOW  = (3, "Full-time: 31 to 48 hours worked")
     FULL_TIME_HIGH = (4, "Full-time: 49 or more hours worked")
-    NO_CODE        = (-9,"No code required (People aged under 16, "
-                          "people not working, and students or schoolchildren "
-                          "living away during term-time)")
+    NO_CODE        = (-9, no_code_req(NO_CODE_UNDER_16,
+                                      NO_CODE_NOT_WORKING,
+                                      NO_CODE_AWAY_STUDENT))
 
 class SocialGradeOptions(OptionEnum):
     AB = (1, "AB")
     C1 = (2, "C1")
     C2 = (3, "C2")
     DE = (4, "DE")
-    NO_CODE = (-9, "No code required (People aged under 16, "
-                    "people resident in communal establishments, and "
-                    "students or schoolchildren living away during term- "
-                    "time)")
+    NO_CODE = (-9, no_code_req(NO_CODE_UNDER_16,
+                               NO_CODE_COMMUNAL_RES,
+                               NO_CODE_AWAY_STUDENT))
 
-
-# class to represent column
-class Column:
-    def __init__(self, options, type):
-        self.options = options
-        self.values = None if options is None else options.keys()
-        self.type = type
 
 # map header to column values
 colMap = {"Person ID" : Column(None, int), # set to None to allow any unique id, CHANGE ?

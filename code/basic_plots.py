@@ -1,16 +1,13 @@
+#!/usr/bin/env python
 import matplotlib.pyplot as plt
 import pandas as pd
 
 from MicroDataTeachingVars import colMap
 
+from cycler import cycler
+
 csvPath = '../data/census2011-clean.csv' #placeholder
 imagesDir = '../images/'
-
-''' TO DO:
-        - add legend to bar plot
-        - make executable
-        - executable should take filepath or dataframe AND some value for colMap
-'''
 
 def main():
     df = pd.read_csv(csvPath)
@@ -27,11 +24,7 @@ def genRecordBarPlot(df, colName):
         values = [str(x) for x in colMap.get(colName).values]
         # plot options w/ their frequencies
         f, ax = plt.subplots()
-        bars = ax.bar(values, df[colName].value_counts(), label=values)
-        col = 0
-        for bar in bars:
-            bar.set_color(str(col))
-            col+=.1
+        bars = ax.bar(values, df[colName].value_counts(),label=values)
         # title + y axis
         plt.title("Number of records for each " + colName.lower())
         plt.ylabel("Number of Records")
@@ -40,14 +33,9 @@ def genRecordBarPlot(df, colName):
         plt.xticks(values)
         if len(values[0]) > 1: # if vals too long, tilt
             plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
-
         # create legend w/ keys and descriptions
-        # refer to for legend stuff
-        # https://stackoverflow.com/questions/62941033/how-to-turn-x-axis-values-into-a-legend-for-matplotlib-bar-graph 
         legend = [f'{x.key()} - {x.desc().split("(")[0]}' for x in colMap.get(colName).options]
-        # TO DO: ADD LEGEND SOMEHOW
-        #ax.legend([x for x in colMap.get(colName).options])
-        plt.legend(labels=legend)
+        plt.legend(labels=legend,loc='upper right')
         # save and close
         plt.savefig(imagesDir+'barchart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
         plt.close()

@@ -1,28 +1,37 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-#import numpy as np
 
 from mpl_toolkits import mplot3d
-from statistics import getGroupTable
+from stats import getGroupTable
 from MicroDataTeachingVars import colMap
 
 def main():
     df = pd.read_csv("../data/census2011-clean.csv")
-    #plotTable(df, "Region", "Industry")
-    plotTable(df, "Occupation", "Approximated Social Grade")
+    plotTable(getGroupTable(df, "Region", "Industry"), "Region", "Industry")
+    plotTable(getGroupTable(df, "Occupation", "Approximated Social Grade"), "Occupation", "Approximated Social Grade")
 
 def plotTable(df, col1, col2):
     data = getGroupTable(df, col1, col2)
     fig = plt.figure()
-    ax = plt.axes(projection='3d')
-    for x, z in data.items():
-        print("Plotting...", x[0], x[1], z)
-        ax.scatter3D(x[0], x[1], z)
+    ax = plt.axes(111, projection='3d')
+    xs = df[col1]
+    xlabels = colMap.get(col1).values
+    ys = df[col2]
+    ylabels = colMap.get(col2).values
+    zs = df["counts"]
+    # https://stackoverflow.com/questions/54113067/3d-scatterplot-with-strings-in-python 
+    count = 0
+    for x in range(len(xlabels)):
+        for y in range(len(ylabels)):
+            ax.scatter(x, y, zs[count])
+            count+=1
     plt.title("Records by "+col1+" and "+ col2)
     ax.set_xlabel(col1)
-    ax.set_xticks(colMap.get(col1).values)
+    #ax.set_xticks(xs)
     ax.set_ylabel(col2)
-    ax.set_yticks(colMap.get(col2).values)
+    #ax.set_yticks(ys)
+    ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
+           yticks=range(len(ylabels)), yticklabels = ylabels)
     ax.set_zlabel("Count")
     plt.show()
 

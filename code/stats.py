@@ -28,8 +28,9 @@ def getUniqueCounts(col):
 
 # groupby req
 def getGroupTable(df, col1, col2):
-    df2 = df.groupby(col1)
-    return df2[col2].value_counts()
+    df_c = df.groupby(col1)[col2].value_counts().reset_index() # group columns, count them
+    df_c.columns = [col1, col2, "counts"] # rename columns
+    return df_c
 
 if __name__ == "__main__":
     printSummary(pd.read_csv("../data/census2011-clean.csv"))

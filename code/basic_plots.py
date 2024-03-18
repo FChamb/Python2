@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 from MicroDataTeachingVars import colMap
 
 from cycler import cycler
 
 csvPath = '../data/census2011-clean.csv' #placeholder
-imagesDir = '../images/'
+imagesDir = '../images/basics/'
 
 def main():
     df = pd.read_csv(csvPath)
+    os.makedirs(imagesDir, exist_ok=True)
     print("Generating basic requirement plots...")
     genRecordBarPlot(df, 'Region')
     genRecordBarPlot(df, 'Occupation')

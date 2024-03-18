@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 from mpl_toolkits import mplot3d
 from stats import getGroupTable
 from MicroDataTeachingVars import colMap
+
+imagesDir = '../images/3d/'
 
 def main():
     df = pd.read_csv("../data/census2011-clean.csv")
@@ -30,7 +33,9 @@ def plotTable(df, col1, col2):
     ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
            yticks=range(len(ylabels)), yticklabels = ylabels)
     ax.set_zlabel("Count")
+    plt.savefig(imagesDir+'3d-'+(col1 + '-' + col2).replace(' ', '-').lower()+'.png')
     plt.show()
 
 if __name__ == "__main__":
+    os.makedirs(imagesDir, exist_ok = True)
     main()

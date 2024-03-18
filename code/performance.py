@@ -35,8 +35,7 @@ def df_parse_dict(df):
         if col.options is None:
             continue
         opts = {x.key(): x.desc() for x in col.options}
-        #print("Opts: ", opts)
-        df[column].apply(lambda x: opts[x])
+        df[column].replace(opts)
 
 
 # https://stackoverflow.com/questions/5086430/how-to-pass-parameters-of-a-function-when-using-timeit-timer
@@ -90,8 +89,8 @@ if __name__ == "__main__":
     profileSize(df, 400000, cur)
     for k,v in cur.items():
         print(k, "->", v)
-    validate = {"Simple iteration": cur["iterate_df_in_values"], "Improved": cur["current_impl"]}
-    parse = {"Parser by iteration": cur["parse_by_iter"], "Improved": cur["parse_dict"]}
+    validate = {"Simple iteration": cur["iterate_df_in_values"], "Using panda's isin()": cur["current_impl"]}
+    parse = {"Parser by iteration": cur["parse_by_iter"], "Using dictionary and .replace()": cur["parse_dict"]}
     plot_comparison(validate, "Validation algorithm comparison", "validation_performance.png")
     plot_comparison(parse, "Parsing algorithm comparison", "parse_performance.png")
 

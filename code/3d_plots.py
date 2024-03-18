@@ -26,10 +26,7 @@ def plotTable(df, col1, col2):
             ax.scatter(x, y, zs[count])
             count+=1
     plt.title("Records by "+col1+" and "+ col2)
-    ax.set_xlabel(col1)
-    #ax.set_xticks(xs)
     ax.set_ylabel(col2)
-    #ax.set_yticks(ys)
     ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
            yticks=range(len(ylabels)), yticklabels = ylabels)
     ax.set_zlabel("Count")

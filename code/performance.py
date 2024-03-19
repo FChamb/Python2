@@ -22,7 +22,7 @@ def iterate_df_in_values(df):
 def cur_impl(df):
     consistency.findProblemRows(df)
 
-def df_parse_by_iter(df):
+def df_parse_by_apply(df):
     for column in df:
         col = md.colMap.get(column)
         if col.options is None:
@@ -37,23 +37,25 @@ def df_parse_dict(df):
         opts = {x.key(): x.desc() for x in col.options}
         df[column].replace(opts)
 
-
 # https://stackoverflow.com/questions/5086430/how-to-pass-parameters-of-a-function-when-using-timeit-timer
 def profileWith(df):
     results = {}
-    NUMBER = 3
-    print("== Iterate df in values ==")
-    results["iterate_df_in_values"] = timeit.timeit(lambda: iterate_df_in_values(df), number=NUMBER)
-    print("== Current implementation ==")
-    results["current_impl"] = timeit.timeit(lambda: cur_impl(df), number=NUMBER)
-    print("== Parse df list ==")
-    results["parse_by_iter"] = timeit.timeit(lambda: df_parse_by_iter(df), number=NUMBER)
-    print("== Parse df dict ==")
-    results["parse_dict"] = timeit.timeit(lambda: df_parse_dict(df), number=NUMBER)
+    print("Simple Iteration... ", flush=True, end="")
+    results["iterate_df_in_values"] = profileMethod(lambda: iterate_df_in_values(df), 3)
+    print("Current implementation... ", flush=True, end="")
+    results["current_impl"] = profileMethod(lambda: cur_impl(df), 10)
+    print("Parse df list... ", flush=True, end="")
+    results["parse_by_apply"] = profileMethod(lambda: df_parse_by_apply(df), 3)
+    print("Parse df dict... ", flush=True, end="")
+    results["parse_dict"] = profileMethod(lambda: df_parse_dict(df), 10)
+    print()
     return results
 
+def profileMethod(f, number):
+    return timeit.timeit(f, number=number) / number
+
 def profileSize(df, size, cur):
-    print(f"-- {size} Rows --")
+    print(f"{size} Rows: ", flush=True, end="")
     result = profileWith(df.head(size))
     for k,v in result.items():
         pair = (size, v)
@@ -62,7 +64,7 @@ def profileSize(df, size, cur):
         else:
             cur[k].append(pair)
 
-def plot_comparison(lines, title, filename):
+def plot_comparison(lines, title, filename, save):
     fig, ax = plt.subplots()
     ax.set_title(title)
     ax.set_xlabel("DataFrame rows")
@@ -72,11 +74,13 @@ def plot_comparison(lines, title, filename):
         times = [x[1] for x in v]
         ax.plot(size, times, label=k)
     ax.legend()
-    fig.savefig("images/" + filename)
+    if save:
+        fig.savefig("images/performance/" + filename)
     print("Saved", filename)
 
-if __name__ == "__main__":
-    df = pandas.read_csv(md.csvPath)
+def profile_and_plot(df, save=False):
+    if len(df) < 400000:
+        print("Data set is not atleast 400000, this will mean graphs are incorrect")
     cur = {}
     profileSize(df, 10, cur)
     profileSize(df, 100, cur)
@@ -87,10 +91,24 @@ if __name__ == "__main__":
     profileSize(df, 50000, cur)
     profileSize(df, 100000, cur)
     profileSize(df, 400000, cur)
-    for k,v in cur.items():
-        print(k, "->", v)
-    validate = {"Simple iteration": cur["iterate_df_in_values"], "Using panda's isin()": cur["current_impl"]}
-    parse = {"Parser by iteration": cur["parse_by_iter"], "Using dictionary and .replace()": cur["parse_dict"]}
-    plot_comparison(validate, "Validation algorithm comparison", "validation_performance.png")
-    plot_comparison(parse, "Parsing algorithm comparison", "parse_performance.png")
 
+    validate = {"Simple iteration": cur["iterate_df_in_values"], "Using panda's isin()": cur["current_impl"]}
+    parse = {"Parse by .apply()": cur["parse_by_apply"],
+             "Using dictionary and .replace()": cur["parse_dict"]}
+    plot_comparison(validate, "Validation algorithm comparison", "validation.png", save)
+    plot_comparison(parse, "Parsing algorithm comparison", "parse.png", save)
+    print("== Validation Results ==")
+    print_results(validate)
+    print("== Parsing Results ==")
+    print_results(parse)
+
+def print_results(results):
+    for k,v in results.items():
+        print(f"{k}: ", end="")
+        # Format to 5 significant digits
+        line = ["({}: {:.5g})".format(x[0], x[1]) for x in v]
+        print(", ".join(line))
+
+if __name__ == "__main__":
+    df = pandas.read_csv(md.csvPath)
+    profile_and_plot(df, save=True)

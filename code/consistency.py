@@ -23,6 +23,9 @@ def main(csvPath):
 def cleanDataFrame(df):    
     # appropriate values
     if hasProblemValue(df):
+        print("Finding rows with problem values...")
+        problemRows = findProblemRows(df)
+        print("Problem finding finished.")
         dropRows(df, findProblemRows(df))
     # appropriate types
     problemColumns = checkTypes(df)
@@ -63,10 +66,8 @@ def checkTypes(df):
 
 # returns a list of indices of rows where there is an invalid value
 def findProblemRows(df):
-    print("Finding rows with problem values...")
     problems = []
     for col_name in df:
-        print("Column:", col_name)
         col = colMap[col_name]
         if col.values is None:
             continue
@@ -75,7 +76,6 @@ def findProblemRows(df):
         if len(bad_values) != 0:
             print("Discrepancies in column ", col_name, "-", bad_values)
             return list(bad_values)
-    print("Problem finding finished.")
     return problems
 
 # returns true if an invalid value is found in a given dataframe

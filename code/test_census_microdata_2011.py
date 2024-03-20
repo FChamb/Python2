@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-import MicroDataTeachingVars as md
+import census_microdata_2011 as md
 from consistency import colValidity as col_valid
 
 class TestExampleMicroData(unittest.TestCase):

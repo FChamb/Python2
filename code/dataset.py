@@ -3,6 +3,25 @@
 import enum
 from enum import Enum
 
+class DataSet:
+    """Represents a particular dataset that can be analysed
+
+    This class provides the `path` of the data file (relative to data/)
+    as well as a mapping from column names to column specifications.
+    """
+    def __init__(self, path, colMap):
+        self.path = path
+        self.colMap = colMap
+
+    def get_column(self, colName):
+        """Get the Column specification by column name
+
+        This returns a Column object, which defines the expected
+        data values and mappings for a particular column in
+        the data set.
+        """
+        return self.colMap[colName]
+
 # class to represent column
 class Column:
     """Represents specification of a column in a dataset

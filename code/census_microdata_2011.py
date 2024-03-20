@@ -1,12 +1,12 @@
 '''
 See MicroDataTeachingVariables pdf for details
 '''
+from dataset import DataSet
 from dataset import Column
 from dataset import OptionEnum
 
 import pandas as pd
 
-csvPath = "data/census2011.csv"
 
 NO_CODE_REQ = "No Code required"
 NO_CODE_AWAY_STUDENT = "students or schoolchildren living away during term-time"
@@ -230,5 +230,9 @@ colMap = {"Person ID" : Column(None, int), # set to None to allow any unique id,
           "Hours worked per week" : Column(HoursWorkedPerWeekOptions, int),
           "Approximated Social Grade" : Column(SocialGradeOptions, int)
           }
+
+csvPath = "data/census2011.csv"
+
+dataset = DataSet(csvPath, colMap)
 
 # compare economic activity to occupation, student status, etc. to find discrepancies

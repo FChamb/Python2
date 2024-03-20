@@ -4,7 +4,7 @@ import os
 
 from mpl_toolkits import mplot3d
 from stats import getGroupTable
-from MicroDataTeachingVars import colMap
+from census_microdata_2011 import dataset
 
 imagesDir = '../images/3d/'
 
@@ -18,9 +18,9 @@ def plotTable(df, col1, col2):
     fig = plt.figure()
     ax = plt.axes(111, projection='3d')
     xs = df[col1]
-    xlabels = colMap.get(col1).values
+    xlabels = dataset.get_column(col1).values
     ys = df[col2]
-    ylabels = colMap.get(col2).values
+    ylabels = dataset.get_column(col2).values
     zs = df["counts"]
     # https://stackoverflow.com/questions/54113067/3d-scatterplot-with-strings-in-python 
     count = 0

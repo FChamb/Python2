@@ -2,7 +2,7 @@ import pandas
 import timeit
 import matplotlib.pyplot as plt
 
-import MicroDataTeachingVars as md
+import census_microdata_2011 as md
 import consistency
 
 

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-from MicroDataTeachingVars import colMap
+from census_microdata_2011 import dataset
 
 from cycler import cycler
 
@@ -21,9 +21,9 @@ def main():
     print("Done.")
 
 def genRecordBarPlot(df, colName):
-    if colMap.get(colName) is not None:
+    if dataset.get_column(colName) is not None:
         # gets options as strings
-        values = [str(x) for x in colMap.get(colName).values]
+        values = [str(x) for x in dataset.get_column(colName).values]
         # plot options w/ their frequencies
         f, ax = plt.subplots()
         bars = ax.bar(values, df[colName].value_counts(),label=values)
@@ -36,7 +36,7 @@ def genRecordBarPlot(df, colName):
         if len(values[0]) > 1: # if vals too long, tilt
             plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
         # create legend w/ keys and descriptions
-        legend = [f'{x.key()} - {x.desc().split("(")[0]}' for x in colMap.get(colName).options]
+        legend = [f'{x.key()} - {x.desc().split("(")[0]}' for x in dataset.get_column(colName).options]
         plt.legend(labels=legend,loc='upper right')
         # save and close
         plt.savefig(imagesDir+'barchart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
@@ -45,8 +45,8 @@ def genRecordBarPlot(df, colName):
         raise ValueError(colName+" is an invalid column")
 
 def genDistPieChart(df, colName):
-    if colMap.get(colName) is not None:
-        plt.pie(df[colName].value_counts(), labels = colMap.get(colName).options) # plot w labels
+    if dataset.get_column(colName) is not None:
+        plt.pie(df[colName].value_counts(), labels = dataset.get_column(colName).options) # plot w labels
         plt.title("Distribution of sample by " + colName.lower()) # name
         # save and close
         plt.savefig(imagesDir+'piechart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight") 

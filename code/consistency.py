@@ -9,7 +9,7 @@ import sys
 from os import R_OK
 import pandas as pd
 
-from MicroDataTeachingVars import *
+import census_microdata_2011 as md
 
 def main(csvPath):
     # https://stackoverflow.com/questions/32073498/check-if-file-is-readable-with-python-try-or-if-else
@@ -49,8 +49,8 @@ def dropRows(df, rows):
 def reTypeCols(df, cols):
     print("Retyping columns", cols, "...")
     for col in cols:
-        print("Retyping",col,"from",type(col), "to", colMap.get(col).type)
-        df[col] = df[col].astype(colMap.get(col).type)
+        print("Retyping",col,"from",type(col), "to", md.dataset.get_column(col).type)
+        df[col] = df[col].astype(md.dataset.get_column(col).type)
     print("Retyping finished")
 
 # returns a list of columns that are incorrectly typed
@@ -58,8 +58,8 @@ def checkTypes(df):
     print("Checking types...")
     problems = []
     for column in df:
-        if not df[column].dtype == colMap.get(column).type:
-            print("Discrepancy of type in column ", column, "expected", colMap.get(column).type, "found", df[column].dtype)
+        if not df[column].dtype == md.dataset.get_column(column).type:
+            print("Discrepancy of type in column ", column, "expected", md.dataset.get_column(column).type, "found", df[column].dtype)
             problems.append(column)
     print("Type checking finished.")
     return problems
@@ -68,7 +68,7 @@ def checkTypes(df):
 def findProblemRows(df):
     problems = []
     for col_name in df:
-        col = colMap[col_name]
+        col = md.dataset.get_column(col_name)
         if col.values is None:
             continue
         values_good = df[col_name].isin(col.values)
@@ -83,7 +83,7 @@ def hasProblemValue(df):
     print("Checking for problem values...")
     isValid = False
     for column in df:
-        if not colValidity(df[column], colMap.get(column).values):
+        if not colValidity(df[column], md.dataset.get_column(column).values):
             print("Discrepancy of value in column ", column)
             isValid = True
     print("Value checking finished.")

@@ -1,7 +1,7 @@
 import unittest
 import sys
 
-import MicroDataTeachingVarsTest
+import test_census_microdata_2011
 
 def test():
     """Create and run the test suite"""
@@ -13,7 +13,7 @@ def suite():
     """Create a test suite with all the test classes in"""
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
-    suite.addTest(loader.loadTestsFromTestCase(MicroDataTeachingVarsTest.TestExampleMicroData))
+    suite.addTest(loader.loadTestsFromTestCase(test_census_microdata_2011.TestExampleMicroData))
     return suite
 
 if __name__ == "__main__":

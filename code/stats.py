@@ -5,9 +5,9 @@ def printSummary(df):
     print("Column types-----------")
     print(str(getColTypes(df)))
     for col in df.columns[2:]: # skip indices and Person ID column
-        print('-----------')
-        print(str(getUniqueCounts(df[col])))
-    print('-----------')
+        print()
+        print(getUniqueCounts(df[col]).transpose().to_string(header=False))
+    print()
     t1 = getGroupTable(df, "Region", "Industry")
     print("Head of Region/Industry Table: \n", t1.head())
     t2 = getGroupTable(df, "Occupation", "Approximated Social Grade")
@@ -24,7 +24,8 @@ def getColTypes(df):
 
 # basic req
 def getUniqueCounts(col):
-    return col.value_counts()
+    df = col.value_counts().reset_index()
+    return df
 
 # groupby req
 def getGroupTable(df, col1, col2):

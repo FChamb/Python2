@@ -1,5 +1,3 @@
-# TODO: Add DataSet class that others can implement
-
 import enum
 from enum import Enum
 
@@ -8,10 +6,18 @@ class DataSet:
 
     This class provides the `path` of the data file (relative to data/)
     as well as a mapping from column names to column specifications.
+
+    [path] - Path to the csv file, relative to the data directory
+    [colMap] - Mapping of column names to the Column objects
+    [conts] - List of contradictions for this dataset in the format [(a, [b]]
+              Which means: if a true in a row, then [b] must all be true,
+              except for multiple values in the same column, which are
+              treated as an OR.
     """
-    def __init__(self, path, colMap):
+    def __init__(self, path, colMap, conts):
         self.path = path
         self.colMap = colMap
+        self.conts = conts
 
     def get_column(self, colName):
         """Get the Column specification by column name
@@ -21,6 +27,17 @@ class DataSet:
         the data set.
         """
         return self.colMap[colName]
+
+    def get_column_name(self, optionType):
+        """Get a column name from the OptionEnum type"""
+        for (k, v) in self.colMap.items():
+            if v.options == optionType:
+                return k
+        raise KeyError("Unknown OptionEnum type: " + str(optionType))
+
+    def get_contradictions(self):
+        """Gets the contradictions"""
+        return self.conts
 
 # class to represent column
 class Column:

@@ -232,13 +232,39 @@ colMap = {"Person ID" : Column(None, int), # set to None to allow any unique id,
           }
 
 # contradictions
-conts = [(AgeOptions.UNDER_16, [MaritalStatusOptions.SINGLE, SocialGradeOptions.NO_CODE, HoursWorkedPerWeekOptions.NO_CODE, IndustryOptions.NO_CODE, OccupationOptions.NO_CODE, EconomicActivityOptions.NO_CODE]),
-         (HealthOptions.VERY_BAD,[EconomicActivityOptions.SICK_OR_DISABLED]),
-         #(StudentOptions.YES,[CountryOfBirthOptions.UK, CountryOfBirthOptions.NON_UK]),
-         ()]
+conts = [
+    (AgeOptions.UNDER_16,   [MaritalStatusOptions.SINGLE,
+                             SocialGradeOptions.NO_CODE,
+                             HoursWorkedPerWeekOptions.NO_CODE,
+                             IndustryOptions.NO_CODE,
+                             OccupationOptions.NO_CODE,
+                             EconomicActivityOptions.NO_CODE]),
+    (PopulationBaseOptions.STUDENT_AWAY, [FamilyCompositionOptions.NO_CODE,
+                                          CountryOfBirthOptions.NO_CODE,
+                                          HealthOptions.NO_CODE,
+                                          EthnicityOptions.NO_CODE,
+                                          ReligionOptions.NO_CODE,
+                                          EconomicActivityOptions.NO_CODE,
+                                          OccupationOptions.NO_CODE,
+                                          IndustryOptions.NO_CODE,
+                                          HoursWorkedPerWeekOptions.NO_CODE,
+                                          SocialGradeOptions.NO_CODE]),
+    (HealthOptions.VERY_BAD,[EconomicActivityOptions.SICK_OR_DISABLED,
+                             EconomicActivityOptions.RETIRED,
+                             EconomicActivityOptions.STUDENT_INACTIVE]),
+    (StudentOptions.NO,     [CountryOfBirthOptions.UK,
+                             CountryOfBirthOptions.NON_UK]),
+    (StudentOptions.YES,    [EconomicActivityOptions.FULL_TIME_STUDENT,
+                             EconomicActivityOptions.STUDENT_INACTIVE,
+                             EconomicActivityOptions.NO_CODE]),
+    (EconomicActivityOptions.RETIRED,    [HoursWorkedPerWeekOptions.NO_CODE]),
+    (EconomicActivityOptions.UNEMPLOYED, [HoursWorkedPerWeekOptions.NO_CODE]),
+    (ResidenceOptions.COMMUNAL, [FamilyCompositionOptions.NO_CODE,
+                                  SocialGradeOptions.NO_CODE])
+]
 
 csvPath = "data/census2011.csv"
 
-dataset = DataSet(csvPath, colMap)
+dataset = DataSet(csvPath, colMap, conts)
 
 # compare economic activity to occupation, student status, etc. to find discrepancies

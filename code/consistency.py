@@ -32,12 +32,45 @@ def cleanDataFrame(df):
     reTypeCols(df, problemColumns)
 
     removeDupId(df)
+    findContradictions(df)
     
     # TO DO: find contradictions ?
     return df
 
 def findContradictions(df):
-    pass
+    bad_rows = []
+    for (req, thens) in md.dataset.get_contradictions():
+        colName = md.dataset.get_column_name(req.__class__)
+        print(f">> Checking {colName} == {req}")
+        candidates = df.loc[df[colName] == req.key()]
+        # Transform array into dictionary of column name to permitted values
+        contDict = {}
+        for t in thens:
+            tColName = md.dataset.get_column_name(t.__class__)
+            if tColName not in contDict:
+                contDict[tColName] = []
+            contDict[tColName].append(t)
+        #print("Dict: " + str(contDict))
+        for targetColName, permitted in contDict.items():
+            print(f"Requirement:", permitted, "- ", end="")
+            permitted_values = [x.key() for x in permitted]
+            values_good = candidates[targetColName].isin(permitted_values)
+            #print(values_good)
+            values_bad = values_good[~values_good]
+            if len(values_bad) != 0:
+                print("CONTRADICTION")
+                #print(values_bad)
+                bad_df = candidates.loc[~values_good].copy()
+                colNameDesc = colName + " DESC"
+                targetColNameDesc = targetColName + " DESC"
+                show_columns = [colName, colNameDesc, targetColName, targetColNameDesc]
+                bad_df[colNameDesc] = bad_df[colName].replace(req.mappings)
+                bad_df[targetColNameDesc] = bad_df[targetColName].replace(permitted[0].mappings)
+                print(bad_df[show_columns])
+                bad_rows = bad_rows + list(values_bad)
+            else:
+                print("HOLDS")
+    return bad_rows
 
 # given a list of indices, deletes the rows at those indices in the dataframe
 def dropRows(df, rows):

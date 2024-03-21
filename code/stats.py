@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 import pandas as pd
+import sys
 
 def printSummary(df):
     print("Number of Records: " + str(getNumRecords(df)))
@@ -34,4 +36,11 @@ def getGroupTable(df, col1, col2):
     return df_c
 
 if __name__ == "__main__":
-    printSummary(pd.read_csv("../data/census2011-clean.csv"))
+    if (len(sys.argv) != 2):
+        print("Invalid arguments")
+        print("Usage:", sys.argv[0], "<csvfile>")
+        exit(1)
+    try:
+        printSummary(pd.read_csv(sys.argv[1]))
+    except:
+        print("Execution unsuccessful: error with file")

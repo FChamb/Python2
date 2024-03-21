@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import os
 
-from mpl_toolkits import mplot3d
 from stats import getGroupTable
 from census_microdata_2011 import dataset
 
@@ -19,58 +18,60 @@ def main():
 
 # https://stackoverflow.com/questions/54113067/3d-scatterplot-with-strings-in-python 
 def plotScatter(df, col1, col2):
-    fig = plt.figure()
+    plt.figure()
     ax = plt.axes(111, projection='3d')
     # get values
-    xs = df[col1]
-    xlabels = dataset.get_column(col1).values
-    ys = df[col2]
-    ylabels = dataset.get_column(col2).values
+    xs = dataset.get_column(col1).values
+    ys = dataset.get_column(col2).values
     zs = df["counts"]
     # plot individual points
     count = 0
-    for x in range(len(xlabels)):
-        for y in range(len(ylabels)):
+    for x in range(len(xs)):
+        for y in range(len(ys)):
             ax.scatter(x, y, zs[count])
             count+=1
     # labelling
     plt.title("Records by "+col1+" and "+ col2)
     ax.set_xlabel(col1)
     ax.set_ylabel(col2)
-    ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
-           yticks=range(len(ylabels)), yticklabels = ylabels)
+    ax.set(xticks=range(len(xs)), xticklabels = xs,
+           yticks=range(len(ys)), yticklabels = ys)
     ax.set_zlabel("Count")
+    # save and show
     plt.savefig(imagesDir+'3d-scatter-'+(col1 + '-' + col2).replace(' ', '-').lower()+'.png')
     plt.show()
 
 #https://stackoverflow.com/questions/9170838/surface-plots-in-matplotlib
 def plotContour(df, col1, col2):
+    # get values
     xlabels = dataset.get_column(col1).values
     ylabels = dataset.get_column(col2).values
     area = len(xlabels) * len(ylabels)
     x = [None] * area
     y = [None] * area
     index = 0
+    # assign x values
     for i in range(len(ylabels)):
         for val in range(len(xlabels)):
             x[index] = val
             index += 1
+    # assign y values
     index = 0
     for i in range(len(xlabels)):
         for val in range(len(ylabels)):
             y[index] = val
             index += 1
-
-    fig = plt.figure()
+    # generate plot
+    plt.figure()
     ax = plt.axes(projection='3d')
     ax.plot_trisurf(x, y, list(df["counts"]),cmap =cm.viridis)
-
     # labelling
     ax.set_xlabel(col1)
     ax.set_ylabel(col2)
     ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
            yticks=range(len(ylabels)), yticklabels = ylabels)
     ax.set_zlabel("Count") 
+    # save and show
     plt.savefig(imagesDir+'3d-surface-'+(col1 + '-' + col2).replace(' ', '-').lower()+'.png')
     plt.show()
 

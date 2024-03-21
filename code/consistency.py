@@ -31,11 +31,13 @@ def cleanDataFrame(df):
     problemColumns = checkTypes(df)
     reTypeCols(df, problemColumns)
 
-    # remove all the rows with duplicate ID values
     removeDupId(df)
     
     # TO DO: find contradictions ?
     return df
+
+def findContradictions(df):
+    
 
 # given a list of indices, deletes the rows at those indices in the dataframe
 def dropRows(df, rows):

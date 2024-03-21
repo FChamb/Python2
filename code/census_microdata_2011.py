@@ -231,6 +231,12 @@ colMap = {"Person ID" : Column(None, int), # set to None to allow any unique id,
           "Approximated Social Grade" : Column(SocialGradeOptions, int)
           }
 
+# contradictions
+conts = [(AgeOptions.UNDER_16, [MaritalStatusOptions.SINGLE, SocialGradeOptions.NO_CODE, HoursWorkedPerWeekOptions.NO_CODE, IndustryOptions.NO_CODE, OccupationOptions.NO_CODE, EconomicActivityOptions.NO_CODE]),
+         (HealthOptions.VERY_BAD,[EconomicActivityOptions.SICK_OR_DISABLED]),
+         #(StudentOptions.YES,[CountryOfBirthOptions.UK, CountryOfBirthOptions.NON_UK]),
+         ()]
+
 csvPath = "data/census2011.csv"
 
 dataset = DataSet(csvPath, colMap)

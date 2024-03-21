@@ -37,7 +37,7 @@ def cleanDataFrame(df):
     return df
 
 def findContradictions(df):
-    
+    pass
 
 # given a list of indices, deletes the rows at those indices in the dataframe
 def dropRows(df, rows):

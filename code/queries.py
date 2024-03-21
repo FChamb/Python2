@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def main():
-    df = pd.read_csv("../data/census2011-clean.csv")
+    df = pd.read_csv("data/census2011-clean.csv")
     query1 = find_economically_active_region(df)
     query2 = find_economically_active_region(df)
     print("Number of economically active people by region: ")
@@ -22,4 +22,5 @@ def find_economically_active_age(df):
 
 
 if __name__ == '__main__':
+    # TODO: Take file as argument
     main()

@@ -7,10 +7,10 @@ from mpl_toolkits import mplot3d
 from stats import getGroupTable
 from census_microdata_2011 import dataset
 
-imagesDir = '../images/3d/'
+imagesDir = 'images/3d/'
 
 def main():
-    df = pd.read_csv("../data/census2011-clean.csv")
+    df = pd.read_csv("data/census2011-clean.csv")
     plotScatter(getGroupTable(df, "Region", "Industry"), "Region", "Industry")
     plotScatter(getGroupTable(df, "Occupation", "Approximated Social Grade"), "Occupation", "Approximated Social Grade")
     #plotContour(getGroupTable(df, "Region", "Industry"), "Region", "Industry")

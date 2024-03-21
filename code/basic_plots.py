@@ -7,8 +7,8 @@ from census_microdata_2011 import dataset
 
 from cycler import cycler
 
-csvPath = '../data/census2011-clean.csv' #placeholder
-imagesDir = '../images/basics/'
+csvPath = 'data/census2011-clean.csv' #placeholder
+imagesDir = 'images/basics/'
 
 def main():
     df = pd.read_csv(csvPath)
@@ -55,4 +55,5 @@ def genDistPieChart(df, colName):
         raise ValueError(colName+" is an invalid column")
 
 if __name__ == "__main__":
+    # TODO: Take file argument
     main()

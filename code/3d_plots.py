@@ -11,10 +11,14 @@ imagesDir = 'images/3d/'
 
 def main():
     df = pd.read_csv("data/census2011-clean.csv")
+    print("Generating 3D scatter plots...")
     plotScatter(getGroupTable(df, "Region", "Industry"), "Region", "Industry")
     plotScatter(getGroupTable(df, "Occupation", "Approximated Social Grade"), "Occupation", "Approximated Social Grade")
+    print("Done.")
+    print("Generating 3D surface plots...")
     plotContour(getGroupTable(df, "Region", "Industry"), "Region", "Industry")
     plotContour(getGroupTable(df, "Occupation", "Approximated Social Grade"), "Occupation", "Approximated Social Grade")
+    print("Done.")
 
 # https://stackoverflow.com/questions/54113067/3d-scatterplot-with-strings-in-python 
 def plotScatter(df, col1, col2):
@@ -64,7 +68,7 @@ def plotContour(df, col1, col2):
     # generate plot
     plt.figure()
     ax = plt.axes(projection='3d')
-    ax.plot_trisurf(x, y, list(df["counts"]),cmap =cm.viridis)
+    ax.plot_trisurf(x, y, list(df["counts"]),cmap =cm.jet)
     # labelling
     ax.set_xlabel(col1)
     ax.set_ylabel(col2)

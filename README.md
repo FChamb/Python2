@@ -19,3 +19,29 @@ To start the notebook with an environment providing all the correct dependencies
 ```console
 ./start_notebook.sh
 ```
+### PDF/HTML/LaTeX/MD notebook ###
+The following commands enable simple conversion of the jupyter notebook.
+Copy and pasting the following commands into the terminal can produce the
+results located into the notebooks directory.
+
+PDF:
+```console
+jupyter nbconvert --to pdf --output notebooks notebooks/census2011.ipynb
+```
+HTML:
+```console
+jupyter nbconvert --to html --output notebooks notebooks/census2011.ipynb
+```
+LaTeX:
+```console
+jupyter nbconvert --to latex --output notebooks notebooks/census2011.ipynb
+```
+MD:
+```console
+jupyter nbconvert --to markdown --output notebooks notebooks/census2011.ipynb
+```
+Alternatively you can run the following shell script to produce all of the
+results above instantly.
+```console
+./convert_notebook.sh
+```

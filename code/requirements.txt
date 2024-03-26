@@ -65,6 +65,7 @@ numpy==1.26.4
 overrides==7.7.0
 packaging==23.2
 pandas==2.2.1
+pandoc==2.4b0
 pandocfilters==1.5.1
 parso==0.8.3
 pexpect==4.9.0

@@ -31,7 +31,13 @@ def main():
 def plotMap(df, col): # eventually change to take any column
     # add check for column validity
     m = folium.Map(location=[55,4], zoom_start=5)
-    folium.GeoJson(wales).add_to(m)
+    #folium.GeoJson(wales).add_to(m)
+    # remove legend from wales
+    folium.Choropleth(geo_data = wales,
+                      data = df,
+                      columns = ["Region",col],
+                      fill_color = "RdYlGn_r",
+                      key_on="feature.properties.code").add_to(m)
     folium.Choropleth( geo_data = eng,
                         data = df,
                         columns=["Region", col],

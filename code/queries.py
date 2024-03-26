@@ -47,6 +47,6 @@ def find_economically_active_age(df):
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print("Invalid arguments")
-        print("Usage:", sys.argv[0], "<csvFile>")
+        print("Usage:", sys.argv[0], "<csvPath>")
         exit(1)
     main(sys.argv[1])

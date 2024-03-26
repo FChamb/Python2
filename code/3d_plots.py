@@ -30,12 +30,16 @@ def plotScatter(df, col1, col2):
     @interact(region=Dropdown(options=xs), occupation=Dropdown(options=ys))
     def updatePlot(region, occupation):
         plt.figure()
+        # get values, plot points
         ax = plt.axes(111, projection='3d')
         ax.scatter(xs.index(region), ys.index(occupation), zs[(xs == region) & (ys == occupation)])
         plt.title("Records by " + col1 + " and " + col2)
+        # labelling
         ax.set_xlabel(col1)
         ax.set_ylabel(col2)
         ax.set_zlabel("Count")
+        # save and show
+        plt.savefig(imagesDir + '3d-scatter-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
         plt.show()
 
     '''
@@ -87,12 +91,16 @@ def plotContour(df, col1, col2):
 
     @interact(region=Dropdown(options=xlabels), occupation=Dropdown(options=ylabels))
     def update_plot(region, occupation):
+        # generate plot
         plt.figure()
         ax = plt.axes(projection='3d')
         ax.plot_trisurf(x, y, list(df["counts"]), cmap=cm.jet)
+        # labelling
         ax.set_xlabel(col1)
         ax.set_ylabel(col2)
         ax.set_zlabel("Count")
+        # save and show
+        plt.savefig(imagesDir + '3d-surface-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
         plt.show()
 
     '''

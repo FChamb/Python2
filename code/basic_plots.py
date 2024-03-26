@@ -2,22 +2,29 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
+import sys
 
 from census_microdata_2011 import dataset
-
 from cycler import cycler
+from ipywidgets import interact, Dropdown, IntSlider, fixed
 
-csvPath = 'data/census2011-clean.csv' #placeholder
 imagesDir = 'images/basics/'
 
-def main():
+def main(csvPath):
     df = pd.read_csv(csvPath)
     os.makedirs(imagesDir, exist_ok=True)
     print("Generating basic requirement plots...")
+    interact(genRecordBarPlot(df, 'Region'), df=fixed(df), colName=Dropdown(options=df.columns))
+    interact(genRecordBarPlot(df, 'Occupation'), df=fixed(df), colName=Dropdown(options=df.columns))
+    interact(genDistPieChart(df, 'Age'), df=fixed(df), colName=Dropdown(options=df.columns))
+    interact(genDistPieChart(df, 'Economic Activity'), df=fixed(df), colName=Dropdown(options=df.columns))
+    '''
+    Old plot generation
     genRecordBarPlot(df, 'Region')
     genRecordBarPlot(df, 'Occupation')
     genDistPieChart(df, 'Age')
     genDistPieChart(df, 'Economic Activity')
+    '''
     print("Done.")
 
 def genRecordBarPlot(df, colName):
@@ -49,11 +56,14 @@ def genDistPieChart(df, colName):
         plt.pie(df[colName].value_counts(), labels = dataset.get_column(colName).options) # plot w labels
         plt.title("Distribution of sample by " + colName.lower()) # name
         # save and close
-        plt.savefig(imagesDir+'piechart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight") 
+        plt.savefig(imagesDir+'piechart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
         plt.close()
     else:
         raise ValueError(colName+" is an invalid column")
 
 if __name__ == "__main__":
-    # TODO: Take file argument
-    main()
+    if len(sys.argv) != 2:
+        print("Invalid arguments")
+        print("Usage:", sys.argv[0], "<csvPath>")
+        exit(1)
+    main(sys.argv[1])

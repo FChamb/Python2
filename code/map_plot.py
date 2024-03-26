@@ -12,6 +12,8 @@ import folium
 from branca.utilities import split_six
 from folium.plugins import FastMarkerCluster, HeatMap
 
+from stats import getGroupTable
+
 '''
 https://focaalvarez.medium.com/mapping-the-uk-and-navigating-the-post-code-maze-4898e758b82f
 https://medium.com/@patohara60/interactive-mapping-in-python-with-uk-census-data-6e571c60ff4
@@ -26,18 +28,21 @@ wales = 'https://findthatpostcode.uk/areas/W92000004.geojson'
 
 def main():
     df = pd.read_csv("../data/census2011-clean.csv")
-    plotMap(df, "Health")
+    getTableHtml(df, "E12000001", "Marital Status")
+    plotMap(df, "Marital Status")
 
 def plotMap(df, col): # eventually change to take any column
     # add check for column validity
-    m = folium.Map(location=[55,4], zoom_start=5)
-    #folium.GeoJson(wales).add_to(m)
+    m = folium.Map(location=[54.38, -2.7], zoom_start=5)
     # remove legend from wales
-    folium.Choropleth(geo_data = wales,
-                      data = df,
-                      columns = ["Region",col],
-                      fill_color = "RdYlGn_r",
-                      key_on="feature.properties.code").add_to(m)
+    #https://stackoverflow.com/questions/54595931/show-different-pop-ups-for-different-polygons-in-a-geojson-folium-python-ma 
+    w = folium.Choropleth(geo_data = wales,
+                            data = df,
+                            columns = ["Region",col],
+                            fill_color = "RdYlGn_r",
+                            fill_opacity=.8,
+                            key_on="feature.properties.code").add_to(m)
+    folium.GeoJsonTooltip(["code"], aliases=[getTableHtml(df,"W92000004",col)]).add_to(w.geojson)
     folium.Choropleth( geo_data = eng,
                         data = df,
                         columns=["Region", col],
@@ -46,6 +51,12 @@ def plotMap(df, col): # eventually change to take any column
                         fill_opacity=.8,
                         legend_name=col+" per Region").add_to(m)
     m.show_in_browser()
+
+def getTableHtml(df, region, col):
+    table = getGroupTable(df, "Region", col) # get unique counts of col
+    t = table[table["Region"].values == region] # filter to just specified region
+    t =t.drop(labels="Region",axis=1) # remove region column
+    return t.to_html(index=False)
 
 if __name__ == "__main__":
     main()

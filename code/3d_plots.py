@@ -6,6 +6,7 @@ import os
 
 from stats import getGroupTable
 from census_microdata_2011 import dataset
+from ipywidgets import interact, Dropdown, IntSlider
 
 imagesDir = 'images/3d/'
 
@@ -22,6 +23,23 @@ def main():
 
 # https://stackoverflow.com/questions/54113067/3d-scatterplot-with-strings-in-python 
 def plotScatter(df, col1, col2):
+    xs = dataset.get_column(col1).values
+    ys = dataset.get_column(col2).values
+    zs = df["counts"]
+
+    @interact(region=Dropdown(options=xs), occupation=Dropdown(options=ys))
+    def updatePlot(region, occupation):
+        plt.figure()
+        ax = plt.axes(111, projection='3d')
+        ax.scatter(xs.index(region), ys.index(occupation), zs[(xs == region) & (ys == occupation)])
+        plt.title("Records by " + col1 + " and " + col2)
+        ax.set_xlabel(col1)
+        ax.set_ylabel(col2)
+        ax.set_zlabel("Count")
+        plt.show()
+
+    '''
+    Old version of plotting
     plt.figure()
     ax = plt.axes(111, projection='3d')
     # get values
@@ -44,6 +62,7 @@ def plotScatter(df, col1, col2):
     # save and show
     plt.savefig(imagesDir+'3d-scatter-'+(col1 + '-' + col2).replace(' ', '-').lower()+'.png')
     plt.show()
+    '''
 
 #https://stackoverflow.com/questions/9170838/surface-plots-in-matplotlib
 def plotContour(df, col1, col2):
@@ -65,6 +84,19 @@ def plotContour(df, col1, col2):
         for val in range(len(ylabels)):
             y[index] = val
             index += 1
+
+    @interact(region=Dropdown(options=xlabels), occupation=Dropdown(options=ylabels))
+    def update_plot(region, occupation):
+        plt.figure()
+        ax = plt.axes(projection='3d')
+        ax.plot_trisurf(x, y, list(df["counts"]), cmap=cm.jet)
+        ax.set_xlabel(col1)
+        ax.set_ylabel(col2)
+        ax.set_zlabel("Count")
+        plt.show()
+
+    '''
+    Old version of plotting
     # generate plot
     plt.figure()
     ax = plt.axes(projection='3d')
@@ -78,6 +110,7 @@ def plotContour(df, col1, col2):
     # save and show
     plt.savefig(imagesDir+'3d-surface-'+(col1 + '-' + col2).replace(' ', '-').lower()+'.png')
     plt.show()
+    '''
 
 if __name__ == "__main__":
     os.makedirs(imagesDir, exist_ok = True)

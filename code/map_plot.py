@@ -1,13 +1,11 @@
 
-from geopy.geocoders import Nominatim
-from geopy.extra.rate_limiter import RateLimiter
 import pandas as pd
 import folium
-from branca.utilities import split_six
-from folium.plugins import FastMarkerCluster, HeatMap
+from tabulate import tabulate
 
 from stats import getGroupTable
 from census_microdata_2011 import dataset
+from basic_plots import genDistPieChart, getLegend
 
 '''
 https://focaalvarez.medium.com/mapping-the-uk-and-navigating-the-post-code-maze-4898e758b82f
@@ -15,35 +13,36 @@ https://medium.com/@patohara60/interactive-mapping-in-python-with-uk-census-data
 https://stackoverflow.com/questions/46775667/plotting-uk-districts-postcode-areas-and-regions
 https://realpython.com/python-folium-web-maps-from-data/ THIS IS MAIN SOURCE
 https://stackoverflow.com/questions/54595931/show-different-pop-ups-for-different-polygons-in-a-geojson-folium-python-ma 
+OLD DATA - https://sdgdata.gov.uk/sdg-data/geojson-output-regions.html + https://findthatpostcode.uk/areas/W92000004.html
 '''
-
-#https://sdgdata.gov.uk/sdg-data/geojson-output-regions.html
-eng = 'https://sdgdata.gov.uk/sdg-data/en/geojson/regions/indicator_8-10-1.geojson'
-#https://findthatpostcode.uk/areas/W92000004.html
-wales = 'https://findthatpostcode.uk/areas/W92000004.geojson'
 
 ftp_url = 'https://findthatpostcode.uk/areas/'
 
 def main():
     df = pd.read_csv("../data/census2011-clean.csv")
-    getTableHtml(df, "E12000001", "Marital Status")
-    plotMap(df, "Marital Status")
+    plotMap(df, "Economic Activity")
 
 def plotMap(df, col):
     m = folium.Map(location=[54.38, -2.7], zoom_start=5)
     for reg in dataset.get_column("Region").values:
+        # query find that postcode API
         data = ftp_url + reg + ".geojson"
+        legend = "\n".join(getLegend(col))
         f = folium.Choropleth(geo_data = data,
                                 data = df,
                                 columns = ["Region",col],
                                 fill_color = "RdYlGn_r",
                                 fill_opacity=.8,
-                                key_on="feature.properties.code")
+                                key_on="feature.properties.code",
+                                legend_name = "Average " + col + " By Region\n" + legend)
+        # add table pop up
         folium.GeoJsonTooltip(["code"], aliases=[getTableHtml(df,reg,col)]).add_to(f.geojson)
+        # remove all but one legend
+        if reg != dataset.get_column("Region").values[0]:
+            for key in f._children:
+                if key.startswith('color_map'):
+                    del(f._children[key])
         f.add_to(m)
-    """ for key in m._children:
-        if key.startswith('color_map'):
-            del(m._children[key]) """
     m.show_in_browser()
 
 def getTableHtml(df, region, col):

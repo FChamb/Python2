@@ -43,8 +43,7 @@ def genRecordBarPlot(df, colName):
         if len(values[0]) > 1: # if vals too long, tilt
             plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
         # create legend w/ keys and descriptions
-        legend = [f'{x.key()} - {x.desc().split("(")[0]}' for x in dataset.get_column(colName).options]
-        plt.legend(labels=legend,loc='upper right')
+        plt.legend(labels=getLegend(colName),loc='upper right')
         # save and close
         plt.savefig(imagesDir+'barchart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
         plt.close()
@@ -60,6 +59,9 @@ def genDistPieChart(df, colName):
         plt.close()
     else:
         raise ValueError(colName+" is an invalid column")
+
+def getLegend(colName):
+    return [f'{x.key()} - {x.desc().split("(")[0]}' for x in dataset.get_column(colName).options]
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

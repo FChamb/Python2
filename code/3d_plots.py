@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import pandas as pd
-import numpy as np
 import os
 
 from stats import getGroupTable
@@ -17,8 +16,8 @@ def main():
     plotScatter(getGroupTable(df, "Occupation", "Approximated Social Grade"), "Occupation", "Approximated Social Grade")
     print("Done.")
     print("Generating 3D surface plots...")
-    plotContour(getGroupTable(df, "Region", "Industry"), "Region", "Industry")
-    plotContour(getGroupTable(df, "Occupation", "Approximated Social Grade"), "Occupation", "Approximated Social Grade")
+    plotSurface(getGroupTable(df, "Region", "Industry"), "Region", "Industry")
+    plotSurface(getGroupTable(df, "Occupation", "Approximated Social Grade"), "Occupation", "Approximated Social Grade")
     print("Done.")
 
 # https://stackoverflow.com/questions/54113067/3d-scatterplot-with-strings-in-python 
@@ -32,44 +31,25 @@ def plotScatter(df, col1, col2):
         plt.figure()
         # get values, plot points
         ax = plt.axes(111, projection='3d')
-        ax.scatter(xs.index(region), ys.index(occupation), zs[(xs == region) & (ys == occupation)])
+        # plot individual points
+        count = 0
+        for x in range(len(xs)):
+            for y in range(len(ys)):
+                ax.scatter(x, y, zs[count])
+                count+=1
+        #ax.scatter(xs.index(region), ys.index(occupation), zs[(xs == region) & (ys == occupation)])
         plt.title("Records by " + col1 + " and " + col2)
         # labelling
         ax.set_xlabel(col1)
         ax.set_ylabel(col2)
         ax.set_zlabel("Count")
+        ax.set(xticks=range(len(xs)), xticklabels = xs,
+                yticks=range(len(ys)), yticklabels = ys)
         # save and show
         plt.savefig(imagesDir + '3d-scatter-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
         plt.show()
 
-    '''
-    Old version of plotting
-    plt.figure()
-    ax = plt.axes(111, projection='3d')
-    # get values
-    xs = dataset.get_column(col1).values
-    ys = dataset.get_column(col2).values
-    zs = df["counts"]
-    # plot individual points
-    count = 0
-    for x in range(len(xs)):
-        for y in range(len(ys)):
-            ax.scatter(x, y, zs[count])
-            count+=1
-    # labelling
-    plt.title("Records by "+col1+" and "+ col2)
-    ax.set_xlabel(col1)
-    ax.set_ylabel(col2)
-    ax.set(xticks=range(len(xs)), xticklabels = xs,
-           yticks=range(len(ys)), yticklabels = ys)
-    ax.set_zlabel("Count")
-    # save and show
-    plt.savefig(imagesDir+'3d-scatter-'+(col1 + '-' + col2).replace(' ', '-').lower()+'.png')
-    plt.show()
-    '''
-
-#https://stackoverflow.com/questions/9170838/surface-plots-in-matplotlib
-def plotContour(df, col1, col2):
+def plotSurface(df, col1, col2):
     # get values
     xlabels = dataset.get_column(col1).values
     ylabels = dataset.get_column(col2).values
@@ -99,26 +79,11 @@ def plotContour(df, col1, col2):
         ax.set_xlabel(col1)
         ax.set_ylabel(col2)
         ax.set_zlabel("Count")
+        ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
+                yticks=range(len(ylabels)), yticklabels = ylabels)
         # save and show
         plt.savefig(imagesDir + '3d-surface-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
         plt.show()
-
-    '''
-    Old version of plotting
-    # generate plot
-    plt.figure()
-    ax = plt.axes(projection='3d')
-    ax.plot_trisurf(x, y, list(df["counts"]),cmap =cm.jet)
-    # labelling
-    ax.set_xlabel(col1)
-    ax.set_ylabel(col2)
-    ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
-           yticks=range(len(ylabels)), yticklabels = ylabels)
-    ax.set_zlabel("Count") 
-    # save and show
-    plt.savefig(imagesDir+'3d-surface-'+(col1 + '-' + col2).replace(' ', '-').lower()+'.png')
-    plt.show()
-    '''
 
 if __name__ == "__main__":
     os.makedirs(imagesDir, exist_ok = True)

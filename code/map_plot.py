@@ -2,22 +2,13 @@
 import pandas as pd
 import folium
 import os
-from tabulate import tabulate
 
 from stats import getGroupTable
 from census_microdata_2011 import dataset
 from basic_plots import genDistPieChart, getLegend
 
-'''
-https://focaalvarez.medium.com/mapping-the-uk-and-navigating-the-post-code-maze-4898e758b82f
-https://medium.com/@patohara60/interactive-mapping-in-python-with-uk-census-data-6e571c60ff4
-https://stackoverflow.com/questions/46775667/plotting-uk-districts-postcode-areas-and-regions
-https://realpython.com/python-folium-web-maps-from-data/ THIS IS MAIN SOURCE
-https://stackoverflow.com/questions/54595931/show-different-pop-ups-for-different-polygons-in-a-geojson-folium-python-ma 
-OLD DATA - https://sdgdata.gov.uk/sdg-data/geojson-output-regions.html + https://findthatpostcode.uk/areas/W92000004.html
-'''
 imagesDir = "../images/maps/"
-ftp_url = 'https://findthatpostcode.uk/areas/'
+ftp_url = 'https://findthatpostcode.uk/areas/' # api for obtaining geojson
 
 def main():
     df = pd.read_csv("../data/census2011-clean.csv")

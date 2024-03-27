@@ -1,6 +1,7 @@
-
+#!/usr/bin/env python
 import pandas as pd
 import folium
+import os
 from tabulate import tabulate
 
 from stats import getGroupTable
@@ -15,12 +16,13 @@ https://realpython.com/python-folium-web-maps-from-data/ THIS IS MAIN SOURCE
 https://stackoverflow.com/questions/54595931/show-different-pop-ups-for-different-polygons-in-a-geojson-folium-python-ma 
 OLD DATA - https://sdgdata.gov.uk/sdg-data/geojson-output-regions.html + https://findthatpostcode.uk/areas/W92000004.html
 '''
-
+imagesDir = "../images/maps/"
 ftp_url = 'https://findthatpostcode.uk/areas/'
 
 def main():
     df = pd.read_csv("../data/census2011-clean.csv")
-    plotMap(df, "Economic Activity")
+    m = plotMap(df, "Economic Activity")
+    m.show_in_browser()
 
 def plotMap(df, col):
     m = folium.Map(location=[54.38, -2.7], zoom_start=5)
@@ -48,7 +50,9 @@ def plotMap(df, col):
                     draggable = True,
                     icon = None,
                     tooltip = folium.Tooltip(legend, permanent=True)).add_to(m)
-    m.show_in_browser() # show
+    #m.show_in_browser() # show
+    m.save(imagesDir + col.replace(' ', '-').lower() + '-map.html')
+    return m
 
 def getTableHtml(df, region, col):
     table = getGroupTable(df, "Region", col) # get unique counts of col
@@ -57,4 +61,5 @@ def getTableHtml(df, region, col):
     return t.to_html(index=False) # return as html w/ no indices
 
 if __name__ == "__main__":
+    os.makedirs(imagesDir, exist_ok = True)
     main()

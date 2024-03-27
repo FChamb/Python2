@@ -27,14 +27,13 @@ def plotMap(df, col):
     for reg in dataset.get_column("Region").values:
         # query find that postcode API
         data = ftp_url + reg + ".geojson"
-        legend = "\n".join(getLegend(col))
         f = folium.Choropleth(geo_data = data,
                                 data = df,
                                 columns = ["Region",col],
                                 fill_color = "RdYlGn_r",
                                 fill_opacity=.8,
                                 key_on="feature.properties.code",
-                                legend_name = "Average " + col + " By Region\n" + legend)
+                                legend_name = "Average " + col + " By Region\n")
         # add table pop up
         folium.GeoJsonTooltip(["code"], aliases=[getTableHtml(df,reg,col)]).add_to(f.geojson)
         # remove all but one legend
@@ -43,7 +42,13 @@ def plotMap(df, col):
                 if key.startswith('color_map'):
                     del(f._children[key])
         f.add_to(m)
-    m.show_in_browser()
+    # add legend icon
+    legend = "<br>".join(getLegend(col)) 
+    folium.Marker(location = [57, -8],
+                    draggable = True,
+                    icon = None,
+                    tooltip = folium.Tooltip(legend, permanent=True)).add_to(m)
+    m.show_in_browser() # show
 
 def getTableHtml(df, region, col):
     table = getGroupTable(df, "Region", col) # get unique counts of col

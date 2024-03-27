@@ -8,26 +8,19 @@ from census_microdata_2011 import dataset
 from cycler import cycler
 from ipywidgets import interact, Dropdown, IntSlider, fixed
 
-imagesDir = 'images/basics/'
+imagesDir = '../images/basics/'
 
 def main(csvPath):
     df = pd.read_csv(csvPath)
     os.makedirs(imagesDir, exist_ok=True)
     print("Generating basic requirement plots...")
-    interact(genRecordBarPlot(df, 'Region'), df=fixed(df), colName=Dropdown(options=df.columns))
-    interact(genRecordBarPlot(df, 'Occupation'), df=fixed(df), colName=Dropdown(options=df.columns))
-    interact(genDistPieChart(df, 'Age'), df=fixed(df), colName=Dropdown(options=df.columns))
-    interact(genDistPieChart(df, 'Economic Activity'), df=fixed(df), colName=Dropdown(options=df.columns))
-    '''
-    Old plot generation
-    genRecordBarPlot(df, 'Region')
-    genRecordBarPlot(df, 'Occupation')
-    genDistPieChart(df, 'Age')
-    genDistPieChart(df, 'Economic Activity')
-    '''
+    interact(genRecordBarPlot(df, 'Region', True), df=fixed(df), colName=Dropdown(options=df.columns))
+    interact(genRecordBarPlot(df, 'Occupation', True), df=fixed(df), colName=Dropdown(options=df.columns))
+    interact(genDistPieChart(df, 'Age', True), df=fixed(df), colName=Dropdown(options=df.columns))
+    interact(genDistPieChart(df, 'Economic Activity', True), df=fixed(df), colName=Dropdown(options=df.columns))
     print("Done.")
 
-def genRecordBarPlot(df, colName):
+def genRecordBarPlot(df, colName, save):
     if dataset.get_column(colName) is not None:
         # gets options as strings
         values = [str(x) for x in dataset.get_column(colName).values]
@@ -45,18 +38,24 @@ def genRecordBarPlot(df, colName):
         # create legend w/ keys and descriptions
         plt.legend(labels=getLegend(colName),loc='upper right')
         # save and close
-        plt.savefig(imagesDir+'barchart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
-        plt.close()
+        if save:
+            plt.savefig(imagesDir+'barchart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
+        else:
+            plt.show()
+        #plt.close()
     else:
         raise ValueError(colName+" is an invalid column")
 
-def genDistPieChart(df, colName):
+def genDistPieChart(df, colName, save):
     if dataset.get_column(colName) is not None:
         plt.pie(df[colName].value_counts(), labels = dataset.get_column(colName).options) # plot w labels
         plt.title("Distribution of sample by " + colName.lower()) # name
         # save and close
-        plt.savefig(imagesDir+'piechart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
-        plt.close()
+        if save:
+            plt.savefig(imagesDir+'piechart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
+        else:
+            plt.show()
+        #plt.close()
     else:
         raise ValueError(colName+" is an invalid column")
 

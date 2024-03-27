@@ -10,11 +10,11 @@ def printSummary(df):
         print()
         print(getUniqueCounts(df[col]).transpose().to_string(header=False))
     print()
-    t1 = getGroupTable(df, "Region", "Industry")
+    """ t1 = getGroupTable(df, "Region", "Industry")
     print("Head of Region/Industry Table: \n", t1.head())
     t2 = getGroupTable(df, "Occupation", "Approximated Social Grade")
     print('-----------')
-    print("Head of Occupation/Social Grade Table: \n", t2.head())
+    print("Head of Occupation/Social Grade Table: \n", t2.head()) """
 
 # basic req
 def getNumRecords(df):

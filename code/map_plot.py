@@ -2,6 +2,7 @@
 import pandas as pd
 import folium
 import os
+import sys
 
 from stats import getGroupTable
 from census_microdata_2011 import dataset
@@ -10,12 +11,13 @@ from basic_plots import genDistPieChart, getLegend
 imagesDir = "../images/maps/"
 ftp_url = 'https://findthatpostcode.uk/areas/' # api for obtaining geojson
 
-def main():
-    df = pd.read_csv("../data/census2011-clean.csv")
-    m = plotMap(df, "Economic Activity")
+def main(csvPath):
+    df = pd.read_csv(csvPath)
+    m = plotMap(df, "Age")
     m.show_in_browser()
 
 def plotMap(df, col):
+    print("Generating region by " + col + " map...\n")
     m = folium.Map(location=[54.38, -2.7], zoom_start=5)
     for reg in dataset.get_column("Region").values:
         # query find that postcode API
@@ -43,6 +45,7 @@ def plotMap(df, col):
                     tooltip = folium.Tooltip(legend, permanent=True)).add_to(m)
     #m.show_in_browser() # show
     m.save(imagesDir + col.replace(' ', '-').lower() + '-map.html')
+    print("Done.")
     return m
 
 def getTableHtml(df, region, col):
@@ -52,5 +55,9 @@ def getTableHtml(df, region, col):
     return t.to_html(index=False) # return as html w/ no indices
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Invalid arguments")
+        print("Usage:", sys.argv[0], "<csvPath>")
+        exit(1)
     os.makedirs(imagesDir, exist_ok = True)
-    main()
+    main(sys.argv[1])

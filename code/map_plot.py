@@ -8,7 +8,7 @@ from stats import getGroupTable
 from census_microdata_2011 import dataset
 from basic_plots import genDistPieChart, getLegend
 
-imagesDir = "../images/maps/"
+imagesDir = "images/maps/"
 ftp_url = 'https://findthatpostcode.uk/areas/' # api for obtaining geojson
 
 def main(csvPath):

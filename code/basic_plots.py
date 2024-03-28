@@ -8,7 +8,7 @@ from census_microdata_2011 import dataset
 from cycler import cycler
 from ipywidgets import interact, Dropdown, IntSlider, fixed
 
-imagesDir = '../images/basics/'
+imagesDir = 'images/basics/'
 
 def main(csvPath):
     df = pd.read_csv(csvPath)

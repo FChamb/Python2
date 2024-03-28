@@ -1,9 +1,4 @@
 #!/usr/bin/env python
-'''
-TO DO:
-    - remove contradictions
-    - produce new file with refined data if any duplicates or contradictions are removed
-'''
 import os
 import sys
 from os import R_OK
@@ -12,8 +7,6 @@ import pandas as pd
 import census_microdata_2011 as md
 
 def main(csvPath):
-    # https://stackoverflow.com/questions/32073498/check-if-file-is-readable-with-python-try-or-if-else
-    # Might want to separate each error
     assert os.path.isfile(csvPath) and os.access(csvPath, R_OK), \
        f"File {csvPath} doesn't exist or isn't readable"
 
@@ -33,8 +26,7 @@ def cleanDataFrame(df):
 
     removeDupId(df)
     findContradictions(df)
-    
-    # TO DO: find contradictions ?
+
     return df
 
 def findContradictions(df):

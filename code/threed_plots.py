@@ -28,7 +28,7 @@ def plotScatter(df, col1, col2):
     plt.figure()
 
     @interact(region=Dropdown(options=xs), occupation=Dropdown(options=ys))
-    def updatePlot(region, occupation, plt):
+    def updatePlot(region, occupation):
         plt.figure()
         # get values, plot points
         ax = plt.axes(111, projection='3d')

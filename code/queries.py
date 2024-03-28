@@ -10,13 +10,6 @@ def main(csvPath):
 
     df = pd.read_csv(csvPath)
     findQueries(df)
-    discrepancies = findDiscrepancies(df)
-    print("Discrepancies found between student status and economic activity: ")
-    print(discrepancies)
-
-    hours = findWorkingHours(df)
-    print("Working hours found per week for students: ")
-    print(hours)
 
 def findWorkingHours(df):
     hours = df[(df["Economic Activity"].isin([4, 6])) & df["Student"] == 1]["Hours worked per week"].sum()
@@ -25,10 +18,24 @@ def findWorkingHours(df):
 def findQueries(df):
     query1 = find_economically_active_region(df)
     query2 = find_economically_active_region(df)
+    discrepancies = findDiscrepancies(df)
+    hours = findWorkingHours(df)
+
     print("Number of economically active people by region: ")
     print(query1)
+    print()
+
     print("Number of economically active people by age: ")
     print(query2)
+    print()
+
+    print("Discrepancies found between student status and economic activity: ")
+    print(discrepancies)
+    print()
+
+    print("Working hours found per week for students: ")
+    print(hours)
+    print()
 
 def findDiscrepancies(df):
     ret = df[df["Student"] == 1]["Economic Activity"].value_counts()

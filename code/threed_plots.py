@@ -46,7 +46,7 @@ def plotScatter(df, col1, col2):
         ax.set(xticks=range(len(xs)), xticklabels = xs,
                 yticks=range(len(ys)), yticklabels = ys)
         # save and show
-        plt.savefig(imagesDir + '3d-scatter-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
+        #plt.savefig(imagesDir + '3d-scatter-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
     plt.show()
 
 def plotSurface(df, col1, col2):
@@ -82,7 +82,7 @@ def plotSurface(df, col1, col2):
         ax.set(xticks=range(len(xlabels)), xticklabels = xlabels,
                 yticks=range(len(ylabels)), yticklabels = ylabels)
         # save and show
-        plt.savefig(imagesDir + '3d-surface-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
+        #plt.savefig(imagesDir + '3d-surface-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
         plt.show()
 
 if __name__ == "__main__":

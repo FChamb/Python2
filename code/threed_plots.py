@@ -6,6 +6,7 @@ import os
 from stats import getGroupTable
 from census_microdata_2011 import dataset
 from ipywidgets import interact, Dropdown, IntSlider
+from mpl_toolkits.mplot3d import Axes3D
 
 imagesDir = 'images/3d/'
 
@@ -24,19 +25,22 @@ def plotScatter(df, col1, col2):
     xs = dataset.get_column(col1).values
     ys = dataset.get_column(col2).values
     zs = df["counts"]
-    plt.figure()
 
     @interact(region=Dropdown(options=xs), occupation=Dropdown(options=ys))
     def updatePlot(region, occupation):
-        plt.figure()
+        fig = plt.figure()
         # get values, plot points
         ax = plt.axes(111, projection='3d')
+        # ax = Axes3D(fig)
         # plot individual points
         count = 0
         for x in range(len(xs)):
             for y in range(len(ys)):
-                ax.scatter(x, y, zs[count])
-                count+=1
+                if count < len(zs):
+                    ax.scatter(x, y, zs[count])
+                    count+=1
+                else:
+                    break
         #ax.scatter(xs.index(region), ys.index(occupation), zs[(xs == region) & (ys == occupation)])
         plt.title("Records by " + col1 + " and " + col2)
         # labelling

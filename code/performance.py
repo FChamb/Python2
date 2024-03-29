@@ -37,7 +37,6 @@ def df_parse_dict(df):
         opts = {x.key(): x.desc() for x in col.options}
         df[column].replace(opts)
 
-# https://stackoverflow.com/questions/5086430/how-to-pass-parameters-of-a-function-when-using-timeit-timer
 def profileWith(df):
     results = {}
     print("Simple Iteration... ", flush=True, end="")

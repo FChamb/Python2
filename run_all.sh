@@ -7,7 +7,7 @@ echo "== RUNNING run_consistency.sh ==" && \
 echo "== RUNNING run_summary.sh ==" && \
 ./run_summary.sh "$CLEAN_FILE" && \
 echo "== RUNNING run_queries.sh ==" && \
-./run_queries.sh && \
+./run_queries.sh "$CLEAN_FILE" && \
 echo "== RUNNING run_plots.sh ==" && \
 ./run_plots.sh "$CLEAN_FILE" && \
 echo "== RUNNING run_performance.sh ==" && \

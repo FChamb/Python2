@@ -14,7 +14,7 @@ ftp_url = 'https://findthatpostcode.uk/areas/' # api for obtaining geojson
 def main(csvPath):
     df = pd.read_csv(csvPath)
     plotMap(df, "Age", True)
-    plotMap(df, "Marital", True)
+    plotMap(df, "Marital Status", True)
 
 def plotMap(df, col, save):
     print("Generating region by " + col + " map...\n")

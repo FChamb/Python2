@@ -13,14 +13,15 @@ def main(csvPath):
 
 
 def findWorkingHours(df):
-    hours_mapping = {
-        1: "Part-time: 15 or less hours worked",
-        2: "Part-time: 16 to 30 hours worked",
-        3: "Full-time: 31 to 48 hours worked",
-        4: "Full-time: 49 or more hours worked"
+    map_hours = {
+        1: 10,
+        2: 23,
+        3: 40,
+        4: 50,
+        -9: 0
     }
+    hours = df[(df["Economic Activity"].isin([4, 6])) & df["Student"] == 1]["Hours worked per week"].replace(map_hours).sum()
 
-    hours = df[(df["Economic Activity"].isin([4, 6])) & df["Student"] == 1]["Hours worked per week"].replace(hours_mapping).sum()
     return hours
 
 

@@ -13,10 +13,10 @@ ftp_url = 'https://findthatpostcode.uk/areas/' # api for obtaining geojson
 
 def main(csvPath):
     df = pd.read_csv(csvPath)
-    m = plotMap(df, "Age")
-    m.show_in_browser()
+    plotMap(df, "Age", True)
+    plotMap(df, "Marital", True)
 
-def plotMap(df, col):
+def plotMap(df, col, save):
     print("Generating region by " + col + " map...\n")
     m = folium.Map(location=[54.38, -2.7], zoom_start=5)
     for reg in dataset.get_column("Region").values:
@@ -43,8 +43,10 @@ def plotMap(df, col):
                     draggable = True,
                     icon = None,
                     tooltip = folium.Tooltip(legend, permanent=True)).add_to(m)
-    #m.show_in_browser() # show
-    #m.save(imagesDir + col.replace(' ', '-').lower() + '-map.html')
+    if save:
+        m.save(imagesDir + col.replace(' ', '-').lower() + '-map.html')
+    else:
+        m.show_in_browser()
     print("Done.")
     return m
 

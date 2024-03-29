@@ -55,7 +55,6 @@ def genRecordBarPlot(df, colName, save):
             plt.savefig(imagesDir+'barchart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
         else:
             plt.show()
-        #plt.close()
     else:
         raise ValueError(colName+" is an invalid column")
 
@@ -69,7 +68,6 @@ def genDistPieChart(df, colName, save):
             plt.savefig(imagesDir+'piechart-'+colName.replace(' ', '-').lower()+'.png', bbox_inches="tight")
         else:
             plt.show()
-        #plt.close()
     else:
         raise ValueError(colName+" is an invalid column")
 

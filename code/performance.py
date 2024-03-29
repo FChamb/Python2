@@ -11,7 +11,7 @@ def iterate_df_in_values(df):
     for column in df:
         invalid_rows = []
         invalid_columns[column] = invalid_rows
-        col = md.colMap.get(column)
+        col = md.colMap[column]
         if col.options is None:
             continue
         for i, cell in enumerate(df[column]):
@@ -24,14 +24,14 @@ def cur_impl(df):
 
 def df_parse_by_apply(df):
     for column in df:
-        col = md.colMap.get(column)
+        col = md.colMap[column]
         if col.options is None:
             continue
         df[column].apply(col.options.parse)
 
 def df_parse_dict(df):
     for column in df:
-        col = md.colMap.get(column)
+        col = md.colMap[column]
         if col.options is None:
             continue
         opts = {x.key(): x.desc() for x in col.options}

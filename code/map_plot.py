@@ -45,8 +45,6 @@ def plotMap(df, col, save):
                     tooltip = folium.Tooltip(legend, permanent=True)).add_to(m)
     if save:
         m.save(imagesDir + col.replace(' ', '-').lower() + '-map.html')
-    else:
-        m.show_in_browser()
     print("Done.")
     return m
 

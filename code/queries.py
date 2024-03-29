@@ -13,7 +13,14 @@ def main(csvPath):
 
 
 def findWorkingHours(df):
-    hours = df[(df["Economic Activity"].isin([4, 6])) & df["Student"] == 1]["Hours worked per week"].sum()
+    map_hours = {
+        1: 10,
+        2: 23,
+        3: 40,
+        4: 50,
+        -9: 0
+    }
+    hours = df[(df["Economic Activity"].isin([4, 6])) & df["Student"] == 1]["Hours worked per week"].replace(map_hours).sum()
     return hours
 
 

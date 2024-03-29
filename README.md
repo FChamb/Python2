@@ -19,6 +19,35 @@ To start the notebook with an environment providing all the correct dependencies
 ```console
 ./start_notebook.sh
 ```
+### Scripts for all requirements  
+All:
+```console
+./run_all.sh <FILEPATH>
+```
+Refine data:
+```console
+./run_consistency.sh <FILEPATH>
+```
+Data analysis summary:
+```console
+./run_summary.sh <FILEPATH>
+```
+Execute queries:
+```console
+./run_queries.sh <FILEPATH>
+```
+Generate plots:
+```console
+./run_plots.sh <FILEPATH>
+```
+Performance tests:
+```console
+./run_performance.sh <FILEPATH>
+```
+Unit testing:
+```console
+./test.sh
+```
 ### PDF/HTML/LaTeX/MD notebook ###
 The following commands enable simple conversion of the jupyter notebook.
 Copy and pasting the following commands into the terminal can produce the

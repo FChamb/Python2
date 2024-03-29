@@ -5,7 +5,7 @@ import os
 
 from stats import getGroupTable
 from census_microdata_2011 import dataset
-from ipywidgets import interact, Dropdown, IntSlider
+from ipywidgets import interact, Dropdown, widgets
 from mpl_toolkits.mplot3d import Axes3D
 
 imagesDir = 'images/3d/'
@@ -26,7 +26,9 @@ def plotScatter(df, col1, col2):
     ys = dataset.get_column(col2).values
     zs = df["counts"]
 
-    @interact(region=Dropdown(options=xs), occupation=Dropdown(options=ys))
+    region_dropdown = widgets.Dropdown(options=xs, description=col1)
+    occupation_dropdown = widgets.Dropdown(options=ys, description=col2)
+
     def updatePlot(region, occupation):
         fig = plt.figure()
         # get values, plot points
@@ -51,7 +53,8 @@ def plotScatter(df, col1, col2):
                 yticks=range(len(ys)), yticklabels = ys)
         # save and show
         #plt.savefig(imagesDir + '3d-scatter-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
-    plt.show()
+        plt.show()
+    widgets.interact(updatePlot, region=region_dropdown, occupation=occupation_dropdown)
 
 def plotSurface(df, col1, col2):
     # get values
@@ -73,7 +76,9 @@ def plotSurface(df, col1, col2):
             y[index] = val
             index += 1
 
-    @interact(region=Dropdown(options=xlabels), occupation=Dropdown(options=ylabels))
+    region_dropdown = widgets.Dropdown(options=xlabels, description=col1)
+    occupation_dropdown = widgets.Dropdown(options=ylabels, description=col2)
+
     def update_plot(region, occupation):
         # generate plot
         plt.figure()
@@ -88,6 +93,7 @@ def plotSurface(df, col1, col2):
         # save and show
         #plt.savefig(imagesDir + '3d-surface-' + (col1 + '-' + col2).replace(' ', '-').lower() + '.png')
         plt.show()
+    widgets.interact(update_plot, region=region_dropdown, occupation=occupation_dropdown)
 
 if __name__ == "__main__":
     os.makedirs(imagesDir, exist_ok = True)

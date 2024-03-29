@@ -4,9 +4,11 @@ import pandas as pd
 import os
 import sys
 
+from IPython.core.display_functions import display
+
 from census_microdata_2011 import dataset
 from cycler import cycler
-from ipywidgets import interact, Dropdown, IntSlider, fixed
+from ipywidgets import interact, Dropdown, IntSlider, fixed, widgets, Output
 
 imagesDir = 'images/basics/'
 
@@ -14,10 +16,20 @@ def main(csvPath):
     df = pd.read_csv(csvPath)
     os.makedirs(imagesDir, exist_ok=True)
     print("Generating basic requirement plots...")
-    interact(genRecordBarPlot(df, 'Region', True), df=fixed(df), colName=Dropdown(options=df.columns))
-    interact(genRecordBarPlot(df, 'Occupation', True), df=fixed(df), colName=Dropdown(options=df.columns))
-    interact(genDistPieChart(df, 'Age', True), df=fixed(df), colName=Dropdown(options=df.columns))
-    interact(genDistPieChart(df, 'Economic Activity', True), df=fixed(df), colName=Dropdown(options=df.columns))
+    out1 = Output()
+    out2 = Output()
+    out3 = Output()
+    out4 = Output()
+
+    interact(genRecordBarPlot, df=fixed(df), colName=Dropdown(options=df.columns, value='Region'), save=fixed(True), _output=out1)
+    interact(genRecordBarPlot, df=fixed(df), colName=Dropdown(options=df.columns, value='Occupation'), save=fixed(True), _output=out2)
+    interact(genDistPieChart, df=fixed(df), colName=Dropdown(options=df.columns, value='Age'), save=fixed(True), _output=out3)
+    interact(genDistPieChart, df=fixed(df), colName=Dropdown(options=df.columns, value='Economic Activity'), save=fixed(True), _output=out4)
+
+    display(out1)
+    display(out2)
+    display(out3)
+    display(out4)
     print("Done.")
 
 def genRecordBarPlot(df, colName, save):
@@ -25,8 +37,9 @@ def genRecordBarPlot(df, colName, save):
         # gets options as strings
         values = [str(x) for x in dataset.get_column(colName).values]
         # plot options w/ their frequencies
-        f, ax = plt.subplots()
-        bars = ax.bar(values, df[colName].value_counts(),label=values)
+        plt.figure()
+        # f, ax = plt.subplots()
+        bars = plt.bar(values, df[colName].value_counts(), label=values)
         # title + y axis
         plt.title("Number of records for each " + colName.lower())
         plt.ylabel("Number of Records")
@@ -34,7 +47,7 @@ def genRecordBarPlot(df, colName, save):
         plt.xlabel(colName)
         plt.xticks(values)
         if len(values[0]) > 1: # if vals too long, tilt
-            plt.setp(ax.get_xticklabels(), rotation=30, horizontalalignment='right')
+            plt.setp(plt.gca().get_xticklabels(), rotation=30, horizontalalignment='right')
         # create legend w/ keys and descriptions
         plt.legend(labels=getLegend(colName),loc='upper right')
         # save and close
@@ -48,6 +61,7 @@ def genRecordBarPlot(df, colName, save):
 
 def genDistPieChart(df, colName, save):
     if dataset.get_column(colName) is not None:
+        plt.figure()
         plt.pie(df[colName].value_counts(), labels = dataset.get_column(colName).options) # plot w labels
         plt.title("Distribution of sample by " + colName.lower()) # name
         # save and close

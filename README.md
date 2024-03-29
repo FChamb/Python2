@@ -20,10 +20,11 @@ To start the notebook with an environment providing all the correct dependencies
 ./start_notebook.sh
 ```
 ### Scripts for all requirements  
-All:
+All (using the 2011 census dataset):
 ```console
-./run_all.sh <FILEPATH>
+./run_all.sh
 ```
+
 Refine data:
 ```console
 ./run_consistency.sh <FILEPATH>

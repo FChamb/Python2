@@ -6,7 +6,9 @@ import census_microdata_2011 as md
 import consistency
 
 
+# WAYS OF VALIDATING
 def iterate_df_in_values(df):
+    """Naive way of validating through iteration"""
     invalid_columns = {}
     for column in df:
         invalid_rows = []
@@ -20,9 +22,12 @@ def iterate_df_in_values(df):
     return invalid_columns
 
 def cur_impl(df):
+    """Our implementation: uses DataFrame.isin()"""
     consistency.findProblemRows(df)
 
+# WAYS OF PARSING
 def df_parse_by_apply(df):
+    """Parse using DataFrame.apply()"""
     for column in df:
         col = md.colMap[column]
         if col.options is None:
@@ -30,6 +35,7 @@ def df_parse_by_apply(df):
         df[column].apply(col.options.parse)
 
 def df_parse_dict(df):
+    """Parse using DataFrame.replace()"""
     for column in df:
         col = md.colMap[column]
         if col.options is None:
@@ -38,6 +44,7 @@ def df_parse_dict(df):
         df[column].replace(opts)
 
 def profileWith(df):
+    """Profile all methods with a given data frame"""
     results = {}
     print("Simple Iteration... ", flush=True, end="")
     results["iterate_df_in_values"] = profileMethod(lambda: iterate_df_in_values(df), 3)
@@ -51,9 +58,11 @@ def profileWith(df):
     return results
 
 def profileMethod(f, number):
+    """Profile a method, getting the average time taken to run each iteration"""
     return timeit.timeit(f, number=number) / number
 
 def profileSize(df, size, cur):
+    """Profile a given size dataframe"""
     print(f"{size} Rows: ", flush=True, end="")
     result = profileWith(df.head(size))
     for k,v in result.items():
@@ -64,6 +73,7 @@ def profileSize(df, size, cur):
             cur[k].append(pair)
 
 def plot_comparison(lines, title, filename, save):
+    """Plot a line graph comparing the different methods"""
     fig, ax = plt.subplots()
     ax.set_title(title)
     ax.set_xlabel("DataFrame rows")
@@ -78,6 +88,8 @@ def plot_comparison(lines, title, filename, save):
     print("Saved", filename)
 
 def profile_and_plot(df, save=False):
+    """Profile the various methods for a range of dataframe sizes"""
+
     if len(df) < 400000:
         print("Data set is not atleast 400000, this will mean graphs are incorrect")
     cur = {}
@@ -102,6 +114,7 @@ def profile_and_plot(df, save=False):
     print_results(parse)
 
 def print_results(results):
+    """Prin the benchmark results in a human readable format"""
     for k,v in results.items():
         print(f"{k}: ", end="")
         # Format to 5 significant digits

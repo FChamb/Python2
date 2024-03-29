@@ -73,7 +73,6 @@ class OptionEnum(Enum):
     achieve much higher performance when needed.
     """
 
-    # https://stackoverflow.com/questions/56735081/add-and-initilalize-an-enum-class-variable-in-python
     def __init__(self, k, v):
         # Intiialise a class member variable mapping with all enums in
         super().__init__()

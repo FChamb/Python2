@@ -54,7 +54,7 @@ def find_economically_active_age(df):
     df = df[df["Economic Activity"] != -9]
     return df.groupby("Age")["Person ID"].count()
 
-
+# Find the results to query 1
 def find_query1(df):
     query1 = find_economically_active_region(df)
     print("Number of economically active people by region: ")
@@ -62,21 +62,21 @@ def find_query1(df):
     print()
     return query1
 
-
+# Find the results to query 2
 def find_query2(df):
     query2 = find_economically_active_region(df)
     print("Number of economically active people by age: ")
     print(query2)
     print()
 
-
+# Find the results to discrepancies
 def find_discrepancies(df):
     discrepancies = findDiscrepancies(df)
     print("Discrepancies found between student status and economic activity: ")
     print(discrepancies)
     print()
 
-
+# Find the results to hours
 def find_hours(df):
     hours = findWorkingHours(df)
     print("Working hours found per week for students: ")

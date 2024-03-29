@@ -21,8 +21,6 @@ def findWorkingHours(df):
     }
 
     hours = df[(df["Economic Activity"].isin([4, 6])) & df["Student"] == 1]["Hours worked per week"].replace(hours_mapping).sum()
-
-
     return hours
 
 

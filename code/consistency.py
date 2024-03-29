@@ -10,8 +10,10 @@ def main(csvPath):
     assert os.path.isfile(csvPath) and os.access(csvPath, R_OK), \
        f"File {csvPath} doesn't exist or isn't readable"
 
+    cleanPath = "data/census2011-clean.csv"
     df = pd.read_csv(csvPath)
-    cleanDataFrame(df)
+    df = cleanDataFrame(df)
+    df.to_csv(cleanPath, index=False)
 
 def cleanDataFrame(df):    
     # appropriate values

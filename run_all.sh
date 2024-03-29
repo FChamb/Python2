@@ -12,5 +12,3 @@ echo "== RUNNING run_plots.sh ==" && \
 ./run_plots.sh "$CLEAN_FILE" && \
 echo "== RUNNING run_performance.sh ==" && \
 ./run_performance.sh
-echo "== Running convert_notebook.sh ==" && \
-./convert_notebook.sh

@@ -51,7 +51,9 @@ Unit testing:
 ### PDF/HTML/LaTeX/MD notebook ###
 The following commands enable simple conversion of the jupyter notebook.
 Copy and pasting the following commands into the terminal can produce the
-results located into the notebooks directory.
+results located into the notebooks directory. Because of the way LeTeX is 
+formatted on the lab machines, this commands will not run. To get this as
+a reproducible result, the commands will be to be run on a personal machine.
 
 PDF:
 ```console

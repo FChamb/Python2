@@ -1,0 +1,1643 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{census2011}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{\texorpdfstring{\textbf{CS2006 Python Practical
+2}}{CS2006 Python Practical 2}}\label{cs2006-python-practical-2}
+
+Tutor: Stephen Linton\\
+2024-3-29\\
+\#\# \textbf{Requirement Breakdown} We completed all requirements in a
+concise, effective, and organized manner. In the completion of this
+project, we have gained experience using Python for data analysis. *
+\textbf{Student A - 230015014} - Data refinement - Unit testing for data
+refinement - venv - Optimization/performance analysis * \textbf{Student
+B - 220024634} - Data refinement - Data analysis - Basic data
+visualisation - Finding records w/ groupby - 3D plots - map by region
+plots * \textbf{Student C - 220010065} - Querying the data - ipywidgets
+- nbconvert
+
+    In this practical, we are given a dataset containing a sample of 1\% of
+people in the 2011 Census database for England and Wales. We are asked
+to analyze this dataset using programs written by us and using
+components of the Python ecosystem. Our project thoroughly refines the
+data, describes it accurately, is repeatable, replicable, reproducible
+and resuable. All analytics can be executed with any data set of similar
+structure.
+
+Run through our notebook from top to bottom, starting by importing and
+reading the data.
+
+\textbf{Please be patient if you run all cells as interactive plots will
+not respond until all cells have finished running}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{sys} 
+\PY{k+kn}{import} \PY{n+nn}{os}
+
+\PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../code}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{consistency}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{\texorpdfstring{\textbf{Refining the
+dataset}}{Refining the dataset}}\label{refining-the-dataset}
+
+We start with exploring the content of the raw data.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../data/census2011.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+        Person ID     Region Residence Type  Family Composition  \textbackslash{}
+0         7394816  E12000001              H                   2
+1         7394745  E12000001              H                   5
+2         7395066  E12000001              H                   3
+3         7395329  E12000001              H                   3
+4         7394712  E12000001              H                   3
+{\ldots}           {\ldots}        {\ldots}            {\ldots}                 {\ldots}
+569736    7946020  W92000004              H                   1
+569737    7944310  W92000004              H                   3
+569738    7945374  W92000004              H                   3
+569739    7944768  W92000004              H                   1
+569740    7944959  W92000004              H                   2
+
+        Population Base  Sex  Age  Marital Status  Student  Country of Birth  \textbackslash{}
+0                     1    2    6               2        2                 1
+1                     1    1    4               1        2                 1
+2                     1    2    4               1        2                 1
+3                     1    2    2               1        2                 1
+4                     1    1    5               4        2                 1
+{\ldots}                 {\ldots}  {\ldots}  {\ldots}             {\ldots}      {\ldots}               {\ldots}
+569736                1    1    5               1        2                 1
+569737                1    1    3               1        2                 1
+569738                1    1    1               1        1                 1
+569739                1    2    8               5        2                 1
+569740                1    2    2               2        2                 1
+
+        Health  Ethnic Group  Religion  Economic Activity  Occupation  \textbackslash{}
+0            2             1         2                  5           8
+1            1             1         2                  1           8
+2            1             1         1                  1           6
+3            2             1         2                  1           7
+4            1             1         2                  1           1
+{\ldots}        {\ldots}           {\ldots}       {\ldots}                {\ldots}         {\ldots}
+569736       4             1         9                  1           8
+569737       2             1         1                  1           7
+569738       1             1         2                 -9          -9
+569739       3             1         9                  5           9
+569740       2             1         1                  1           7
+
+        Industry  Hours worked per week  Approximated Social Grade
+0              2                     -9                          4
+1              6                      4                          3
+2             11                      3                          4
+3              7                      3                          2
+4              4                      3                          2
+{\ldots}          {\ldots}                    {\ldots}                        {\ldots}
+569736         8                      3                          3
+569737         4                      3                          4
+569738        -9                     -9                         -9
+569739         2                     -9                          4
+569740         4                      1                          4
+
+[569741 rows x 18 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We will first refine the data in order to handle inconsistencies before
+further analysis.
+
+We consider inconsistencies to be:\\
+* 0-15 age range and any form of marital status other than single * Any
+mismatched `no codes' to do with student status * Anyone marked as
+working and in very bad health * Anyone with very bad health who is not
+marked as sick or disabled
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df} \PY{o}{=} \PY{n}{consistency}\PY{o}{.}\PY{n}{cleanDataFrame}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Checking for problem values{\ldots}
+Value checking finished.
+Checking types{\ldots}
+Discrepancy of type in column  Residence Type expected string found object
+Type checking finished.
+Retyping columns ['Residence Type'] {\ldots}
+Retyping Residence Type from <class 'str'> to string
+Retyping finished
+>> Checking Age == 0-15
+Requirement: [<MaritalStatusOptions: 1 -> SINGLE>] - CONTRADICTION
+        Age Age DESC  Marital Status  \textbackslash{}
+26774     1     0-15               2
+26821     1     0-15               2
+207835    1     0-15               2
+452434    1     0-15               2
+467282    1     0-15               2
+480533    1     0-15               2
+499946    1     0-15               2
+511216    1     0-15               2
+546848    1     0-15               2
+554079    1     0-15               4
+555682    1     0-15               5
+
+                                      Marital Status DESC
+26774   Married or in a registered same-sex civil part{\ldots}
+26821   Married or in a registered same-sex civil part{\ldots}
+207835  Married or in a registered same-sex civil part{\ldots}
+452434  Married or in a registered same-sex civil part{\ldots}
+467282  Married or in a registered same-sex civil part{\ldots}
+480533  Married or in a registered same-sex civil part{\ldots}
+499946  Married or in a registered same-sex civil part{\ldots}
+511216  Married or in a registered same-sex civil part{\ldots}
+546848  Married or in a registered same-sex civil part{\ldots}
+554079  Divorced or formely in a same-sex civil partne{\ldots}
+555682  Widowed or surviving partner from a same-sexci{\ldots}
+Requirement: [<SocialGradeOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<HoursWorkedPerWeekOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<IndustryOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<OccupationOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<EconomicActivityOptions: -9 -> NO\_CODE>] - HOLDS
+>> Checking Population Base == Student living away from home during term-time
+Requirement: [<FamilyCompositionOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<CountryOfBirthOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<HealthOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<EthnicityOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<ReligionOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<EconomicActivityOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<OccupationOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<IndustryOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<HoursWorkedPerWeekOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<SocialGradeOptions: -9 -> NO\_CODE>] - HOLDS
+>> Checking Health == Very bad health
+Requirement: [<EconomicActivityOptions: 8 -> SICK\_OR\_DISABLED>,
+<EconomicActivityOptions: 5 -> RETIRED>, <EconomicActivityOptions: 6 ->
+STUDENT\_INACTIVE>, <EconomicActivityOptions: 9 -> OTHER>] - CONTRADICTION
+        Health      Health DESC  Economic Activity  \textbackslash{}
+1025         5  Very bad health                  2
+2054         5  Very bad health                  2
+2477         5  Very bad health                  7
+2648         5  Very bad health                  3
+2919         5  Very bad health                  1
+{\ldots}        {\ldots}              {\ldots}                {\ldots}
+566627       5  Very bad health                  1
+567482       5  Very bad health                  4
+568308       5  Very bad health                  1
+568805       5  Very bad health                  1
+569045       5  Very bad health                  1
+
+                                   Economic Activity DESC
+1025                   Economically active: Self-employed
+2054                   Economically active: Self-employed
+2477    Economically inactive: Looking after home or f{\ldots}
+2648                      Economically active: Unemployed
+2919                        Economically active: Employee
+{\ldots}                                                   {\ldots}
+566627                      Economically active: Employee
+567482             Economically active: Full-time student
+568308                      Economically active: Employee
+568805                      Economically active: Employee
+569045                      Economically active: Employee
+
+[971 rows x 4 columns]
+>> Checking Student == No
+Requirement: [<CountryOfBirthOptions: 1 -> UK>, <CountryOfBirthOptions: 2 ->
+NON\_UK>] - HOLDS
+>> Checking Student == Yes
+Requirement: [<EconomicActivityOptions: 4 -> FULL\_TIME\_STUDENT>,
+<EconomicActivityOptions: 6 -> STUDENT\_INACTIVE>, <EconomicActivityOptions: -9
+-> NO\_CODE>] - HOLDS
+>> Checking Economic Activity == Economically inactive: Retired
+Requirement: [<HoursWorkedPerWeekOptions: -9 -> NO\_CODE>] - HOLDS
+>> Checking Economic Activity == Economically active: Unemployed
+Requirement: [<HoursWorkedPerWeekOptions: -9 -> NO\_CODE>] - HOLDS
+>> Checking Residence Type == Resident in a communal establishment
+Requirement: [<FamilyCompositionOptions: -9 -> NO\_CODE>] - HOLDS
+Requirement: [<SocialGradeOptions: -9 -> NO\_CODE>] - HOLDS
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{\textbf{Data refining
+results}}{Data refining results}}\label{data-refining-results}
+
+After refining the data we can see the data is of high quality. None of
+the values have the wrong values.
+
+\textbf{However, we do notice a few discrepencies in the data.}
+
+The first contradiction is that there are people in the census that have
+been married under the age of 16, and even some that are widows or
+divorced. Under UK law their marriage would not be legal, even in 2011:
+-
+https://www.gov.uk/government/news/legal-age-of-marriage-in-england-and-wales-rises-to-18
+- https://www.gov.uk/marriage-abroad
+
+This is likely a discrepency between what the responders understood as
+being married, and the actual UK laws, or a mistake in the response.
+
+The second contradiction is that there are many people with very bad
+health that are still working. We interpreted ``Very bad health'' as
+being so ill that they would be unable to work - i.e the sick or
+disabled category. We believe this is a discrepency, but it is more
+arguable that the other discrepency, and this shows by the large number
+of rows with this contradiction.
+
+We decided to not remove the rows with these contradictions, because
+although we did think there was a contradiction, it was only with a
+singular column and was likely a contradiction due to a disagreement
+between our opinion and the census responder's interpretation of the
+categories.
+
+Next lets save the cleaned data to a separate file so we can reuse it
+later.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cleanPath} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../data/census2011\PYZhy{}clean.csv}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{df}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{n}{cleanPath}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)} \PY{c+c1}{\PYZsh{} save to csv}
+\end{Verbatim}
+\end{tcolorbox}
+
+    To recreate this step, navigate to the parent directory, then execute
+the \texttt{./run\_consistency} script which takes a csv path as a
+parameter
+
+    \subsubsection{\texorpdfstring{\textbf{Refinement - Unit
+Testing}}{Refinement - Unit Testing}}\label{refinement---unit-testing}
+
+Since we saw no invalid values in the test data, we needed to test that
+we would actually pick up on any invalid values. For this practical, we
+did not see many invalid values in the data so we needed some other way
+to test that our input validation was working correctly.
+
+In order to do this, we created tests that checked various permitted and
+disallowed values by calling the same functions as our verification
+code.
+
+We worked on tests and encoding of the variables separately, which meant
+that the chance of anything being missed by both was very low. It also
+gave us confidence that when we changed the parsing code to make it more
+extensible and optimise it, that we would know if anything was missed.
+In fact, we caught a couple of mistakes using these unit tests.
+
+Our unit tests can be run with the \texttt{./test.sh} script
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{test} \PY{k}{as} \PY{n+nn}{tests}
+
+\PY{n}{tests}\PY{o}{.}\PY{n}{test}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+test\_age\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_age\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_birth\_country\_invalid\_zero
+(test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_birth\_country\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots}
+ok
+test\_economic\_activity\_invalid (test\_census\_microdata\_2011.TestExampleMicroData)
+{\ldots} ok
+test\_economic\_activity\_valid (test\_census\_microdata\_2011.TestExampleMicroData)
+{\ldots} ok
+test\_ethnicity\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_ethnicity\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_family\_composition\_invalid
+(test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_family\_composition\_valid (test\_census\_microdata\_2011.TestExampleMicroData)
+{\ldots} ok
+test\_health\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_health\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_hours\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_hours\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_industry\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_industry\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_invalid\_regions (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_invalid\_residence\_type (test\_census\_microdata\_2011.TestExampleMicroData)
+{\ldots} ok
+test\_marital\_status\_invalid\_zero
+(test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_marital\_status\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots}
+ok
+test\_occupation\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_occupation\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_population\_base\_invalid (test\_census\_microdata\_2011.TestExampleMicroData)
+{\ldots} ok
+test\_population\_base\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots}
+ok
+test\_religion\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_religion\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_residence\_type (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_sex\_invalid\_3 (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_sex\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_social\_grade\_invalid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots}
+ok
+test\_social\_grade\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_student\_invalid\_zero (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots}
+ok
+test\_student\_valid (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_valid\_regions (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+test\_valid\_student\_id (test\_census\_microdata\_2011.TestExampleMicroData) {\ldots} ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 0.051s
+
+OK
+    \end{Verbatim}
+
+    \subsection{\texorpdfstring{\textbf{Design: Refining the data - Students
+A \&
+B}}{Design: Refining the data - Students A \& B}}\label{design-refining-the-data---students-a-b}
+
+Initially, we simply enumerated the possible values of each column and
+tested each column. This was a very simplistic approach, and allowed us
+to rapidly evaluate the quality of the data. By first doing a quick
+analysis of the data, we were able to make an informed decision of how
+to handle invalid data. Since there were no invalid values we decided
+that future datasets would be unlikely to have a large amount of invalid
+data, and so we decided to remove any invalid rows from the data set. If
+there were a large number of invalid rows, this could cause issues as
+the sample used for analysis may not be fully representative of the
+original data, and could lead us to draw invalid conclusions.
+
+We wanted to make cleaning and verification data extensible to other
+data sets, but our current way would need to be completely rewritten for
+a new data set with new columns. Therefore, we developed
+\texttt{OptionEnum}, that extends \texttt{Enum}, and stores a mapping of
+key to description. We can now easily work with the data set, listing
+all possible values with their descriptions as well as parsing.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{census\PYZus{}microdata\PYZus{}2011} \PY{k}{as} \PY{n+nn}{md}
+\PY{p}{[}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{.}\PY{n}{key}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{.}\PY{n}{desc}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{md}\PY{o}{.}\PY{n}{EthnicityOptions}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+['1: White',
+ '2: Mixed',
+ '3: Asian or Asian British',
+ '4: Black or Black British',
+ '5: Chinese or Other ethnic group',
+ '-9: No code required (Not resident in england or wales, students or
+schoolchildren living away during term-time)']
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We can also use this to easily search for a particular value in the
+dataset and easily translate the cryptic key names into the descriptive
+strings
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ages\PYZus{}35\PYZus{}44} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{n}{md}\PY{o}{.}\PY{n}{AgeOptions}\PY{o}{.}\PY{n}{FROM\PYZus{}35\PYZus{}TO\PYZus{}44}\PY{o}{.}\PY{n}{key}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{ages\PYZus{}35\PYZus{}44}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{ages\PYZus{}35\PYZus{}44}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{md}\PY{o}{.}\PY{n}{AgeOptions}\PY{o}{.}\PY{n}{mappings}\PY{p}{)}
+\PY{n}{ages\PYZus{}35\PYZus{}44}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+        Person ID     Region Residence Type  Family Composition  \textbackslash{}
+1         7394745  E12000001              H                   5
+2         7395066  E12000001              H                   3
+6         7394871  E12000001              H                   5
+18        7395059  E12000001              H                   1
+22        7394857  E12000001              H                   2
+{\ldots}           {\ldots}        {\ldots}            {\ldots}                 {\ldots}
+569685    7944687  W92000004              H                   2
+569693    7945171  W92000004              H                   2
+569706    7946284  W92000004              H                   1
+569725    7945073  W92000004              H                   1
+569733    7944827  W92000004              H                   5
+
+        Population Base  Sex    Age  Marital Status  Student  \textbackslash{}
+1                     1    1  35-44               1        2
+2                     1    2  35-44               1        2
+6                     1    2  35-44               3        2
+18                    1    1  35-44               1        2
+22                    1    1  35-44               2        2
+{\ldots}                 {\ldots}  {\ldots}    {\ldots}             {\ldots}      {\ldots}
+569685                1    1  35-44               1        2
+569693                1    2  35-44               2        2
+569706                1    2  35-44               1        2
+569725                1    2  35-44               1        2
+569733                1    2  35-44               4        2
+
+        Country of Birth  Health  Ethnic Group  Religion  Economic Activity  \textbackslash{}
+1                      1       1             1         2                  1
+2                      1       1             1         1                  1
+6                      1       2             1         1                  1
+18                     1       3             1         1                  1
+22                     1       1             1         1                  1
+{\ldots}                  {\ldots}     {\ldots}           {\ldots}       {\ldots}                {\ldots}
+569685                 1       2             1         2                  1
+569693                 1       1             1         2                  1
+569706                 1       1             1         3                  1
+569725                 1       1             1         2                  1
+569733                 1       1             1         1                  1
+
+        Occupation  Industry  Hours worked per week  Approximated Social Grade
+1                8         6                      4                          3
+2                6        11                      3                          4
+6                6        11                      2                          3
+18               8         2                      3                          4
+22               8         2                      3                          4
+{\ldots}            {\ldots}       {\ldots}                    {\ldots}                        {\ldots}
+569685           8         4                      3                          4
+569693           4         4                      2                          2
+569706           3        11                      3                          2
+569725           4        11                      3                          2
+569733           6        10                      2                          4
+
+[78641 rows x 18 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We also wanted to be able to list possible contradictions between fields
+in an intuitive and easy-to change per-dataset format.
+
+In order to do this we created a list of tuples. The example below shows
+one contradiction tuple, which defines that people under 16 should have
+NO\_CODE entered for various fields.
+
+This allows us to easily create add contradictions on a per dataset
+basis
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{t} \PY{o}{=} \PY{n}{md}\PY{o}{.}\PY{n}{dataset}\PY{o}{.}\PY{n}{get\PYZus{}contradictions}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IF }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{t}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}repr\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{THEN:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{t}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+IF  <AgeOptions: 1 -> UNDER\_16>
+THEN: [<MaritalStatusOptions: 1 -> SINGLE>, <SocialGradeOptions: -9 -> NO\_CODE>,
+<HoursWorkedPerWeekOptions: -9 -> NO\_CODE>, <IndustryOptions: -9 -> NO\_CODE>,
+<OccupationOptions: -9 -> NO\_CODE>, <EconomicActivityOptions: -9 -> NO\_CODE>]
+    \end{Verbatim}
+
+    \subsection{\texorpdfstring{\textbf{Descriptive analysis of cleaned data
+- Student
+B}}{Descriptive analysis of cleaned data - Student B}}\label{descriptive-analysis-of-cleaned-data---student-b}
+
+For this basic requirement we were asked to obtain:\\
+* the total number of records in the dataset * the type of each variable
+in the dataset * all different values that each variable takes and the
+number of occurences for each value (excluding Person ID)
+
+To encapsulate this entire requirement, we implemented
+\texttt{printSummary}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{stats} \PY{k}{as} \PY{n+nn}{s}
+\PY{n}{s}\PY{o}{.}\PY{n}{printSummary}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Number of Records: 569741
+Column types-----------
+Region                               object
+Residence Type               string[python]
+Family Composition                    int64
+Population Base                       int64
+Sex                                   int64
+Age                                   int64
+Marital Status                        int64
+Student                               int64
+Country of Birth                      int64
+Health                                int64
+Ethnic Group                          int64
+Religion                              int64
+Economic Activity                     int64
+Occupation                            int64
+Industry                              int64
+Hours worked per week                 int64
+Approximated Social Grade             int64
+dtype: object
+
+Residence Type       H      C
+count           559087  10654
+
+Family Composition       2      1      3      5     -9     4     6
+count               300962  96690  72641  64519  18851  9848  6230
+
+Population Base       1     2     3
+count            561040  6730  1971
+
+Sex         2       1
+count  289172  280569
+
+Age         1      4      5      3      2      6      7      8
+count  106832  78641  77388  75948  72785  65666  48777  43704
+
+Marital Status       1       2      4      5      3
+count           270999  214180  40713  31898  11951
+
+Student       2       1
+count    443204  126537
+
+Country of Birth       1      2    -9
+count             485645  77292  6804
+
+Health       1       2      3      4     5    -9
+count   264971  191744  74480  24558  7184  6804
+
+Ethnic Group       1      3      4      2    -9     5
+count         483477  42712  18786  12209  6804  5753
+
+Religion       2       1      9      6     4    -9     7     5     3     8
+count     333481  141658  40613  27240  8214  6804  4215  2572  2538  2406
+
+Economic Activity       1      -9      5      2      6      3      8      7
+4      9
+count              216025  112618  97480  40632  24756  18109  17991  17945
+14117  10068
+
+Occupation      -9      2      9      4      5      3      1      7      6
+8
+count       149984  64111  58483  53254  48546  44937  39788  38523  37297
+34818
+
+Industry      -9      4      2      8     11     10      6      3      5      9
+12      7     1
+count     149984  68878  53433  49960  49345  40560  35240  30708  25736  24908
+20256  16776  3957
+
+Hours worked per week      -9       3      2      4      1
+count                  302321  153938  52133  35573  25776
+
+Approximated Social Grade       2      -9       4      1      3
+count                      159642  124103  123740  82320  79936
+
+    \end{Verbatim}
+
+    To see the counts of an individual column, use \texttt{getUniqueCounts}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{s}\PY{o}{.}\PY{n}{getUniqueCounts}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Country of Birth}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   Country of Birth   count
+0                 1  485645
+1                 2   77292
+2                -9    6804
+\end{Verbatim}
+\end{tcolorbox}
+        
+    To recreate this step, navigate to the parent directory, then execute
+the \texttt{./run\_summary} script which takes a csv path as a parameter
+
+    The second part of the descriptive analysis, we were told to build the
+following plots: * bar chart for the number of records for each region\\
+* bar chart for the number of records for each occupation\\
+* pie chart for the distribution of the sample by age\\
+* pie chart for the distribution of the sample by the economic activity.
+
+Our implementation of ipywidgets allows custom selection of columns
+using a dropdown, so you can view these plots and more:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+
+\PY{k+kn}{import} \PY{n+nn}{basic\PYZus{}plots} \PY{k}{as} \PY{n+nn}{b}
+
+\PY{n}{out1} \PY{o}{=} \PY{n}{b}\PY{o}{.}\PY{n}{Output}\PY{p}{(}\PY{p}{)}
+\PY{n}{out2} \PY{o}{=} \PY{n}{b}\PY{o}{.}\PY{n}{Output}\PY{p}{(}\PY{p}{)}
+\PY{n}{b}\PY{o}{.}\PY{n}{interact}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{genRecordBarPlot}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{n}{b}\PY{o}{.}\PY{n}{fixed}\PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{,} \PY{n}{colName}\PY{o}{=}\PY{n}{b}\PY{o}{.}\PY{n}{Dropdown}\PY{p}{(}\PY{n}{options}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{,} \PY{n}{value}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Region}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{save}\PY{o}{=}\PY{n}{b}\PY{o}{.}\PY{n}{fixed}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}\PY{p}{,} \PY{n}{\PYZus{}output}\PY{o}{=}\PY{n}{out1}\PY{p}{)}
+\PY{n}{b}\PY{o}{.}\PY{n}{interact}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{genDistPieChart}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{n}{b}\PY{o}{.}\PY{n}{fixed}\PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{,} \PY{n}{colName}\PY{o}{=}\PY{n}{b}\PY{o}{.}\PY{n}{Dropdown}\PY{p}{(}\PY{n}{options}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{,} \PY{n}{value}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Economic Activity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{save}\PY{o}{=}\PY{n}{b}\PY{o}{.}\PY{n}{fixed}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}\PY{p}{,} \PY{n}{\PYZus{}output}\PY{o}{=}\PY{n}{out2}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{out1}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{out2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='colName', index=1, options=('Person ID', 'Region', 'Residence Type…
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='colName', index=13, options=('Person ID', 'Region', 'Residence Typ…
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Output()
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Output()
+    \end{Verbatim}
+
+    
+    To recreate this step, navigate to the parent directory, then execute
+the \texttt{./run\_plots} script which takes a csv path as a parameter
+and assumes the existence of ``Region'', ``Occupation'', ``Age'' and
+``Economic Activity'' as columns. When running the script, the plots
+will be saved as png images in the images directory.
+
+    \subsection{\texorpdfstring{\textbf{Using groupby to produce tables -
+Student
+B}}{Using groupby to produce tables - Student B}}\label{using-groupby-to-produce-tables---student-b}
+
+We were asked to produce the following tables:\\
+* number of records by region and industry\\
+* number of records by occupation and social grade
+
+To make this functionality easy to reuse, we wrote one function,
+\texttt{getGroupTable} which takes a dataframe and two column names and
+produces a table showing the number of records for the pair of columns
+in the given dataframe. This can be done with any pair of columns in the
+given dataframe.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Industry}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+        Region  Industry  counts
+0    E12000001        -9    6854
+1    E12000001         4    3087
+2    E12000001         2    2851
+3    E12000001        11    2524
+4    E12000001         8    1883
+..         {\ldots}       {\ldots}     {\ldots}
+125  W92000004         5    1641
+126  W92000004         6    1500
+127  W92000004        12     992
+128  W92000004         7     594
+129  W92000004         1     403
+
+[130 rows x 3 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Occupation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approximated Social Grade}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   Occupation  Approximated Social Grade  counts
+0          -9                         -9  116915
+1          -9                          2   17787
+2          -9                          4   12169
+3          -9                          3    2062
+4          -9                          1    1051
+\end{Verbatim}
+\end{tcolorbox}
+        
+    An example of reuse of this method:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Student}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Religion}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    Student  Religion  counts
+0         1         2   60401
+1         1         1   35488
+2         1         6   10398
+3         1         9    8660
+4         1        -9    6804
+5         1         4    2113
+6         1         7    1091
+7         1         5     624
+8         1         3     607
+9         1         8     351
+10        2         2  273080
+11        2         1  106170
+12        2         9   31953
+13        2         6   16842
+14        2         4    6101
+15        2         7    3124
+16        2         8    2055
+17        2         5    1948
+18        2         3    1931
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{Queries with pandas - Student
+C}}{Queries with pandas - Student C}}\label{queries-with-pandas---student-c}
+
+We were asked to perform queries on the dataframe to find:\\
+* Query 1 - the number of economically active people by region * Query 2
+- the number of economically active people by age * any discrepancies
+between student status and economic activity * the number of working
+hours per week for students
+
+Since we already wrote, \texttt{getGroupTable} which takes a dataframe
+and two column names and produces a table, we were able to extend the
+operation for the second easy requirment. Queries was a simple addition
+in the \texttt{code/queries.py} file. All of the results are presented
+below. Plots have been presented for both query one and two.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} widget
+
+\PY{k+kn}{import} \PY{n+nn}{queries} \PY{k}{as} \PY{n+nn}{q}
+\PY{k+kn}{import} \PY{n+nn}{threed\PYZus{}plots} \PY{k}{as} \PY{n+nn}{p}
+
+\PY{n}{q}\PY{o}{.}\PY{n}{find\PYZus{}query1}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{n}{p}\PY{o}{.}\PY{n}{plotScatter}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Economic Activity}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Number of economically active people by region:
+Region
+E12000001    21371
+E12000002    57513
+E12000003    43073
+E12000004    36861
+E12000005    45258
+E12000006    47674
+E12000007    66212
+E12000008    70306
+E12000009    43807
+W92000004    25048
+Name: Person ID, dtype: int64
+
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='Region', options=('E12000001', 'E12000002', 'E12000003', 'E1200000…
+    \end{Verbatim}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{q}\PY{o}{.}\PY{n}{find\PYZus{}query2}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{n}{p}\PY{o}{.}\PY{n}{plotScatter}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Number of economically active people by age:
+Region
+E12000001    21371
+E12000002    57513
+E12000003    43073
+E12000004    36861
+E12000005    45258
+E12000006    47674
+E12000007    66212
+E12000008    70306
+E12000009    43807
+W92000004    25048
+Name: Person ID, dtype: int64
+
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='Region', options=('E12000001', 'E12000002', 'E12000003', 'E1200000…
+    \end{Verbatim}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{q}\PY{o}{.}\PY{n}{find\PYZus{}discrepancies}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Discrepancies found between student status and economic activity:
+Economic Activity
+-9    88582
+ 6    23838
+ 4    14117
+Name: count, dtype: int64
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{q}\PY{o}{.}\PY{n}{find\PYZus{}hours}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Working hours found per week for students:
+199702
+
+    \end{Verbatim}
+
+    \subsection{\texorpdfstring{\textbf{3D plots - Student B w/
+\texttt{ipywidgets} - Student
+C}}{3D plots - Student B w/ ipywidgets - Student C}}\label{d-plots---student-b-w-ipywidgets---student-c}
+
+The following 3D plots are made using the previously described
+\texttt{getGroupTable} method. There are two methods to generate them,
+\texttt{plotScatter} which produces a 3D scatter plot and
+\texttt{plotSurface} which produces a 3D surface plot.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{p}\PY{o}{.}\PY{n}{plotScatter}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Industry}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Industry}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{p}\PY{o}{.}\PY{n}{plotSurface}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Industry}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Industry}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{p}\PY{o}{.}\PY{n}{plotScatter}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Occupation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approximated Social Grade}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Occupation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approximated Social Grade}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{p}\PY{o}{.}\PY{n}{plotSurface}\PY{p}{(}\PY{n}{s}\PY{o}{.}\PY{n}{getGroupTable}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Occupation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approximated Social Grade}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Occupation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approximated Social Grade}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='Region', options=('E12000001', 'E12000002', 'E12000003', 'E1200000…
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='Region', options=('E12000001', 'E12000002', 'E12000003', 'E1200000…
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='Occupation', options=(1, 2, 3, 4, 5, 6, 7, 8, 9, -9), value=1), Dr…
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+interactive(children=(Dropdown(description='Occupation', options=(1, 2, 3, 4, 5, 6, 7, 8, 9, -9), value=1), Dr…
+    \end{Verbatim}
+
+    
+    \subsection{\texorpdfstring{\textbf{Mapping by region - Student
+B}}{Mapping by region - Student B}}\label{mapping-by-region---student-b}
+
+To map the data for each region on a map, we used the folium library to
+generate the map elements along with the Find that Postcode API to
+generate the region borders. This functionality is encapsulated in the
+method \texttt{plotMap} which takes a dataframe and a column whose data
+is to be visualized.
+
+On the map itself, the data is visualized in multiple ways. Firstly,
+there is a colorscale representing the average value obtained from a
+given region. This is particularly useful when there is a correlation
+between the key and value (ie: Age). Secondly, when hovering over a
+particular region, you can view a table of the number of records for
+that region. To translate this information, there is a legend containing
+the keys and their associated values. For convenience, the legend can be
+dragged around the map.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{map\PYZus{}plot} \PY{k}{as} \PY{n+nn}{m} 
+
+\PY{n}{plot} \PY{o}{=} \PY{n}{m}\PY{o}{.}\PY{n}{plotMap}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
+\PY{n}{plot}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Generating region by Age map{\ldots}
+
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7fbf50f026d0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plot} \PY{o}{=} \PY{n}{m}\PY{o}{.}\PY{n}{plotMap}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Marital Status}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
+\PY{n}{plot}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Generating region by Marital Status map{\ldots}
+
+Done.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7fbf4c13f130>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{\texorpdfstring{\textbf{Performance Analysis and
+Optimisation - Student
+A}}{Performance Analysis and Optimisation - Student A}}\label{performance-analysis-and-optimisation---student-a}
+
+One of the Hard requirements was to analyse the performance of different
+steps of our analysis. To do this we used the timeit library and created
+performance tests over a range of data set sizes.
+
+We identified two problematic steps: \textbf{validation} and
+\textbf{parsing}.
+
+\paragraph{Benchmarking with timeit}\label{benchmarking-with-timeit}
+
+In order to compare the optimised and unoptimised steps of the data
+analysis, we used the built in
+\href{https://docs.python.org/3/library/timeit.html}{timeit} library in
+python along with the census data already provided. We ran the steps on
+different numbers of rows from the data set, ranging from 10 rows to
+400000. This allowed me not only to see whether the algorithm had sped
+up, but predict how it would behave on even larger data sets that our
+code could be used for in future.
+
+In order to make increase the reliability of the results, we run the
+steps multiple times. We run the unoptimised variants 3 times, and the
+optimised variants 10 times, due to the large disparity in time taken to
+run each.
+
+\paragraph{Validation}\label{validation}
+
+The validation step is the step that checks that the entire data frame
+for any invalid data, and reports rows that are invalid. This was
+immediately observed as being slow from when the validation code was
+first made.
+
+Our original implementation used the naive approach of iterating through
+the data frame, and checking that the encoded was one of the permitted
+values.
+
+Experimenting with pandas, we found the method
+\texttt{Series.isin(values)}, which produces a new series with
+True/False values of whether each value was in the given set of values.
+We changed the method to use this which also allowed us to easily see
+which row numbers contained the problematic values.
+
+When we changed to this we immediately saw a huge performance
+improvement, which we later benchmarked (see below).
+
+\paragraph{Parsing}\label{parsing}
+
+The parsing step is the step that converted the encoded data into the
+long human readable descriptions. As we learned from the previous step
+that pandas is much faster than iteration, we used
+\texttt{Series.apply(func)} to apply a mapping function that parsed each
+value. However, this was still not very fast, and although it was
+unlikely to ever be used on the whole data frame, it was still slow on
+subsets.
+
+We tried multiple different approaches, such as using a dictionary
+inside the parsing function, but this only improved the performance
+marginally. After lots of experimentation, we wondered whether the
+.apply() in pandas was not the best way to perform the transformation.
+We discovered that there was indeed a method to elimate this,
+\texttt{.replace()}, which takes a dictionary that maps from the key to
+a value. By using this we was able to see a massive performance
+improvement.
+
+\paragraph{Running the benchmarks}\label{running-the-benchmarks}
+
+To run the benchmarks, the script \texttt{./run\_performance} can be
+used, which will generate graphs in the \texttt{images/performance}
+directory.
+
+The benchmark can also be run below - normally it would be a bad idea to
+run benchmarks in a Jupyter notebook, but in this case the performance
+difference is so extreme that it should overshadow any noise.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZpc{}matplotlib inline}
+
+\PY{k+kn}{import} \PY{n+nn}{performance}
+\PY{n}{performance}\PY{o}{.}\PY{n}{profile\PYZus{}and\PYZus{}plot}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+10 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots} Parse df
+dict{\ldots}
+100 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots} Parse
+df dict{\ldots}
+500 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots} Parse
+df dict{\ldots}
+1000 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots} Parse
+df dict{\ldots}
+5000 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots} Parse
+df dict{\ldots}
+10000 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots} Parse
+df dict{\ldots}
+50000 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots} Parse
+df dict{\ldots}
+100000 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots}
+Parse df dict{\ldots}
+400000 Rows: Simple Iteration{\ldots} Current implementation{\ldots} Parse df list{\ldots}
+Parse df dict{\ldots}
+Saved validation.png
+Saved parse.png
+== Validation Results ==
+Simple iteration: (10: 0.0002364), (100: 0.00045891), (500: 0.0015177), (1000:
+0.0029661), (5000: 0.014497), (10000: 0.028496), (50000: 0.14134), (100000:
+0.28008), (400000: 1.1232)
+Using panda's isin(): (10: 0.0029725), (100: 0.0028284), (500: 0.0027194),
+(1000: 0.0028239), (5000: 0.0032877), (10000: 0.0038061), (50000: 0.0083393),
+(100000: 0.014933), (400000: 0.051708)
+== Parsing Results ==
+Parse by .apply(): (10: 0.0015083), (100: 0.0046068), (500: 0.017954), (1000:
+0.035268), (5000: 0.16526), (10000: 0.33097), (50000: 1.715), (100000: 3.4443),
+(400000: 13.761)
+Using dictionary and .replace(): (10: 0.0083709), (100: 0.0085755), (500:
+0.0099821), (1000: 0.010226), (5000: 0.015071), (10000: 0.021938), (50000:
+0.066102), (100000: 0.12371), (400000: 0.59884)
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{notebooks_files/notebooks_42_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{notebooks_files/notebooks_42_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{\texorpdfstring{\textbf{Benchmarking
+Results}}{Benchmarking Results}}\label{benchmarking-results}
+
+\paragraph{Validation}\label{validation}
+
+We can clearly see that the pandas' \texttt{isin()} method massively
+outperforms iteration. At 400000 rows, \texttt{isin()} is \textbf{over
+20x faster}: 0.044s vs 1.045s.
+
+From the graph it appears this is only a constant improvement - both
+algorithms seem to have O(n) complexity, which means that with a large
+enough data set, the validation step could still take a long time. With
+our dataset however, it goes from being slightly slow to immediate,
+which is a much appreciated improvement.
+
+\paragraph{Parsing}\label{parsing}
+
+The results from the parsing step is similar to the validation step. The
+\texttt{.replace()} method massively outperforms \texttt{.apply()}. At
+400000 rows, \texttt{.replace()} is over 25x faster (0.49s vs 13.7s)
+
+In order to use replace, we were able to use an answer from Ethan
+Furman, 2019 to create a dictionary of key to value which could be used
+in the replace method, massively improving performance without adding
+any extra code to individual datasets, and proving the extensibility of
+our design.
+
+Again, the complexity of both algorithms seems to be the same - O(n).
+
+\paragraph{Lessons and
+Recommendations}\label{lessons-and-recommendations}
+
+The main recommendations from this experience is to - Use panda's
+built-in methods whenever possible - Prefer passing primitives
+(i.e.~lists, sets) instead of functions
+
+We believe the reason for this is that pandas is based on
+\href{https://numpy.org/}{numpy}. Numpy is designed to perform
+operations on multiple columns at the same time, and is partly written
+in C. Therefore, in order to access the best performance we need to pass
+arguments that can be easily translated into C, such as the primitives
+in python. This then allows pandas to use numpy effectively, without
+having to repeatedly cross the C barrier.
+
+This article discusses the issue slightly:
+https://labs.quansight.org/blog/unlocking-c-level-performance-in-df-apply
+
+    \subsection{\texorpdfstring{\textbf{Conclusion}}{Conclusion}}\label{conclusion}
+
+In this project we successfully performed data-analysis on the census
+data set. We took care to make the design of our methods and classes
+easily re-useable to other similar data sets, such as a future census.
+Furthermore, we made our analysis highly performant, allowing it to
+scale to a much larger data set.
+
+We used a wide range of graphs, including maps, pie charts, bar graphs
+and made them interactive within a jupyter notebook that not only
+demonstrated the analysis but also documented our analysis journey.
+
+We found contradictions and interesting statistics about our data, and
+used unit testing where appropriate.
+
+If we had more time, we would analyse other datasets using the framework
+we built during this practical and evaluate the practical reuseability
+of the code we designed.
+
+We completed all the of basic and additional requirements to a high
+standard, and we are very proud of our submission.
+
+    \subsubsection{\texorpdfstring{\textbf{Bibliography}}{Bibliography}}\label{bibliography}
+
+``3D Scatterplot with Strings in Python.'' n.d. Stack Overflow. Accessed
+March 29, 2024.
+https://stackoverflow.com/questions/54113067/3d-scatterplot-with-strings-in-python.
+
+``Add and Initilalize an Enum Class Variable in Python.'' n.d. Stack
+Overflow. Accessed March 29, 2024.
+https://stackoverflow.com/questions/56735081/add-and-initilalize-an-enum-class-variable-in-python.
+
+``Check If File Is Readable with Python: Try or If/Else?'' n.d. Stack
+Overflow. Accessed March 29, 2024.
+https://stackoverflow.com/questions/32073498/check-if-file-is-readable-with-python-try-or-if-else.
+
+``How to Turn X-Axis Values into a Legend for Matplotlib Bar Graph.''
+n.d. Stack Overflow. Accessed March 29, 2024.
+https://stackoverflow.com/questions/62941033/how-to-turn-x-axis-values-into-a-legend-for-matplotlib-bar-graph.
+
+Jaramillo, Juan Felipe Alvarez. 2020. ``Mapping the UK and Navigating
+the Post Code Maze.'' Medium. October 15, 2020.
+https://focaalvarez.medium.com/mapping-the-uk-and-navigating-the-post-code-maze-4898e758b82f.
+
+O'Hara, Patrick. 2022. ``Interactive Mapping in Python with UK Census
+Data.'' Medium. February 18, 2022.
+https://medium.com/@patohara60/interactive-mapping-in-python-with-uk-census-data-6e571c60ff4.
+
+``Plotting UK Districts, Postcode Areas and Regions.'' n.d. Stack
+Overflow. Accessed March 29, 2024.
+https://stackoverflow.com/questions/46775667/plotting-uk-districts-postcode-areas-and-regions.
+
+Python, Real. n.d. ``Python Folium: Create Web Maps from Your Data --
+Real Python.'' Realpython.com.
+https://realpython.com/python-folium-web-maps-from-data/.
+
+``Show Different Pop-Ups for Different Polygons in a GeoJSON
+{[}Folium{]} {[}Python{]} {[}Map{]}.'' n.d. Stack Overflow. Accessed
+March 29, 2024.
+https://stackoverflow.com/questions/54595931/show-different-pop-ups-for-different-polygons-in-a-geojson-folium-python-ma.
+
+``Surface Plots in Matplotlib.'' n.d. Stack Overflow. Accessed March 29,
+2024.
+https://stackoverflow.com/questions/9170838/surface-plots-in-matplotlib.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
